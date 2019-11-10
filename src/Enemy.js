@@ -60,7 +60,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		}
 
 		if (this.hidingTime == bar) {
-			//this.karate_kick_swing.play();
+			this.hidingTime = -1;
 			this.isHiding = true;
 
 			this.scene.robot_withdraw.play();

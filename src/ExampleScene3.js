@@ -352,6 +352,7 @@ export default class ExampleScene3 extends Phaser.Scene {
 		//this.cowbell.play();
 
 		if (this.player.holsterTime == bar) {
+			this.player.holsterTime = -1;
 			this.player.play('unequip');
 			this.karate_kick_swing.play();
 		}
