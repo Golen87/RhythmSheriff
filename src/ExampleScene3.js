@@ -147,14 +147,14 @@ export default class ExampleScene3 extends Phaser.Scene {
 
 	create() {
 		this.music = this.sound.add('practice', { loop: false });
-		this.music.setVolume(0.1);
+		this.music.setVolume(0.5);
 		this.music.play();
 
 
 		for (var i = 0; i < this.soundList.length; i++) {
 			console.log();
 			this[this.soundList[i]] = this.sound.add(this.soundList[i]);
-			this[this.soundList[i]].setVolume(0.1);
+			this[this.soundList[i]].setVolume(0.5);
 		}
 		//this.cowbell.rate = Phaser.Math.RND.realInRange(0.5, 1.5);
 
@@ -216,6 +216,10 @@ export default class ExampleScene3 extends Phaser.Scene {
 
 		this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 		this.keySpace.on('down', this.onShoot, this);
+
+		this.input.on('pointerdown', function(pointer) {
+			this.onShoot(pointer);
+		}, this);
 
 		this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 		this.keyR.on('down', function() {
