@@ -259,7 +259,7 @@ export default class ExampleScene3 extends Phaser.Scene {
 			this.tumble.x = -500;
 		}
 
-		this.enemy.sprite.rotateX(this.getMusicTime());
+		//this.enemy.sprite.rotateX(this.getMusicTime());
 	}
 
 
