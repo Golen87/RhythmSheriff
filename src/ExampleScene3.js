@@ -149,6 +149,7 @@ export default class ExampleScene3 extends Phaser.Scene {
 			'robot_eject',
 			'robot_withdraw',
 			'flip',
+			'destroy_pieces',
 		];
 
 		this.load.image('background', 'src/assets/background.png');
@@ -219,8 +220,8 @@ export default class ExampleScene3 extends Phaser.Scene {
 		this.anims.create({
 			key: 'shoot',
 			frames: [
-				{key: 'dog', frame: 3, duration: 100},
-				{key: 'dog', frame: 4, duration: 50},
+				{key: 'dog', frame: 3, duration: 50},
+				{key: 'dog', frame: 4, duration: 150},
 				{key: 'dog', frame: 5, duration: 0},
 			]
 		});
@@ -376,19 +377,24 @@ export default class ExampleScene3 extends Phaser.Scene {
 			this.miss.play();
 		}
 		else {
-			this.player.play('smallshoot');
-			this.enemy.hit(this, rating);
-			if (rating == 'perfect' || rating == 'good') {
+			let isGoodShot = (rating == 'perfect' || rating == 'good');
+			let isBigShot = isGoodShot && this.enemy.isThreat();
+
+			if (isBigShot) {
+				this.player.play('shoot');
 				this.shoot_3.play();
 			}
 			else {
-				this.shoot_2.play();
+				this.player.play('smallshoot');
+				this.shoot_1.play();
 			}
+
+			this.enemy.hit(this, rating);
 		}
 
 		// Cooldown until holsting the gun
 		//console.log('HIT', this.getBar);
-		this.player.holsterTime = Math.ceil(this.getMusicTime() + 1.25);
+		this.player.holsterTime = Math.ceil(this.getMusicTime() + 1.25) % 32;
 		//console.log(this.getMusicTime(), this.player.holsterTime);
 
 

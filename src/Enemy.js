@@ -7,7 +7,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.startX = x;
 		this.startY = y;
 
-		this.health = 3;
+		this.health = 16;
 		this.bullet_holes = [];
 		this.hit_list = [];
 
@@ -101,9 +101,17 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.add(hole);
 		this.bullet_holes.push(hole);
 
-		this.health -= 1;
-		if (this.isDead()) {
-			this.kill();
+		if (!this.isDead()) {
+			if (this.isThreat() && (rating == 'perfect' || rating == 'good')) {
+				console.log(this.isTurned, this.turnFac > 0.9);
+				this.kill(true);
+			}
+			else {
+				this.health -= 1;
+			}
+			if (this.health <= 0) {
+				this.kill(false);
+			}
 		}
 	}
 
@@ -112,7 +120,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 			this.isHiding = false;
 			this.isTurned = false;
 			this.turnFac = 0;
-			this.health = 3;
+			this.health = 8;
 
 			for (var i = this.bullet_holes.length - 1; i >= 0; i--) {
 				let hole = this.bullet_holes[i];
@@ -125,20 +133,29 @@ export default class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	canHit() {
-		if (this.hideFac > 0.25)
+		if (this.hideFac > 0.1)
 			return false;
-		if (this.turnFac > 0.25 && this.turnFac < 0.75)
+		if (this.turnFac > 0.1 && this.turnFac < 0.9)
 			return false;
 		return true;
+	}
+
+	isThreat() {
+		return this.isTurned && this.turnFac > 0.9;
 	}
 
 	isDead() {
 		return this.health <= 0;
 	}
 
-	kill() {
-		this.scene.target_destroyed_1.play();
-		this.hidingTime = Math.ceil(this.scene.getMusicTime() + 0.25);
+	kill(goodKill) {
+		if (goodKill)
+			this.scene.target_destroyed_1.play();
+		else
+			this.scene.destroy_pieces.play();
+
+		this.health = 0;
+		this.hidingTime = Math.ceil(this.scene.getMusicTime() + 0.25) % 32;
 	}
 
 	update(time, delta) {
