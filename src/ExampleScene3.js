@@ -143,6 +143,7 @@ export default class ExampleScene3 extends Phaser.Scene {
 		this.load.spritesheet('dog', 'src/assets/dog.png', { frameWidth: 700, frameHeight: 1000 });
 		this.load.spritesheet('bullet_hole', 'src/assets/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
 		this.load.image('cat', 'src/assets/cat01.png');
+		this.load.image('tumble', 'src/assets/tumble.png');
 	}
 
 	create() {
@@ -166,6 +167,15 @@ export default class ExampleScene3 extends Phaser.Scene {
 
 
 		this.text = this.add.text(0, 0, "Test", { font: "40px Courier" });
+
+
+		this.enemy = new Enemy(this, 650, 490);
+
+
+		//Tumble
+		this.tumble = this.add.sprite(-500, 460, 'tumble');
+		this.tumble.startY = this.tumble.y;
+		this.tumble.setScale(0.7);
 
 
 		this.player = this.add.sprite(280, 570, 'dog', 0);
@@ -211,8 +221,6 @@ export default class ExampleScene3 extends Phaser.Scene {
 		});
 		//this.player.play('equip');
 
-		this.enemy = new Enemy(this, 650, 490);
-
 
 		this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 		this.keySpace.on('down', this.onShoot, this);
@@ -243,6 +251,15 @@ export default class ExampleScene3 extends Phaser.Scene {
 
 		//this.enemy.hit(this, 0.5);
 		this.enemy.update(this.getMusicTime());
+
+		this.tumble.angle += 3;
+		this.tumble.y = this.tumble.startY - 50 * Math.abs(Math.cos(this.getMusicTime() * Math.PI / 2));
+		this.tumble.x += 5;
+		if (this.tumble.x > this.W+500) {
+			this.tumble.x = -500;
+		}
+
+		this.enemy.sprite.rotateX(this.getMusicTime());
 	}
 
 
