@@ -40,9 +40,18 @@ export default class ExampleScene3 extends Phaser.Scene {
 		this.load.audio('shoot_4', 'src/assets/Sample 283.wav');
 		this.load.audio('karate_kick_miss', 'src/assets/Sample 286.wav');
 		this.load.audio('karate_kick_swing', 'src/assets/Sample 287.wav');
-		this.load.audio('target_destroyed', 'src/assets/Sample 290.wav');
-		this.load.audio('target_destroyed', 'src/assets/Sample 291.wav');
+		this.load.audio('target_destroyed_1', 'src/assets/Sample 290.wav');
+		this.load.audio('target_destroyed_2', 'src/assets/Sample 291.wav');
 		this.load.audio('karate_bomb_kick', 'src/assets/Sample 292.wav');
+
+		this.load.audio('destroy_pieces', 'src/assets/destroy_pieces.wav');
+		this.load.audio('eject', 'src/assets/eject.wav');
+		this.load.audio('fade_out', 'src/assets/fade_out.wav');
+		this.load.audio('metal_eject', 'src/assets/metal_eject.wav');
+		this.load.audio('miss_spin', 'src/assets/miss_spin.wav');
+		this.load.audio('robot_eject', 'src/assets/robot_eject.wav');
+		this.load.audio('robot_withdraw', 'src/assets/robot_withdraw.wav');
+		this.load.audio('flip', 'src/assets/flip.wav');
 
 		this.load.audio('boy_one', 'src/assets/Sample 692.wav');
 		this.load.audio('boy_two', 'src/assets/Sample 694.wav');
@@ -133,17 +142,24 @@ export default class ExampleScene3 extends Phaser.Scene {
 			'miss',
 			'karate_kick_miss',
 			'karate_kick_swing',
-			'target_destroyed',
-			'target_destroyed',
+			'target_destroyed_1',
+			'target_destroyed_2',
 			'karate_bomb_kick',
+			'fade_out',
+			'robot_eject',
+			'robot_withdraw',
+			'flip',
 		];
 
 		this.load.image('background', 'src/assets/background.png');
 		this.load.image('circle', 'src/assets/circle.png');
 		this.load.spritesheet('dog', 'src/assets/dog.png', { frameWidth: 700, frameHeight: 1000 });
+		this.load.spritesheet('cat', 'src/assets/cat.png', { frameWidth: 400, frameHeight: 548 });
 		this.load.spritesheet('bullet_hole', 'src/assets/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
-		this.load.image('cat', 'src/assets/cat01.png');
 		this.load.image('tumble', 'src/assets/tumble.png');
+		this.load.image('wood_front', 'src/assets/wood_front.png');
+		this.load.image('wood_back', 'src/assets/wood_back.png');
+		this.load.image('wood_block', 'src/assets/wood_block.png');
 	}
 
 	create() {
@@ -157,7 +173,7 @@ export default class ExampleScene3 extends Phaser.Scene {
 			this[this.soundList[i]] = this.sound.add(this.soundList[i]);
 			this[this.soundList[i]].setVolume(0.5);
 		}
-		//this.cowbell.rate = Phaser.Math.RND.realInRange(0.5, 1.5);
+		this.flip.rate = 0.5;//Phaser.Math.RND.realInRange(0.5, 1.5);
 
 
 
@@ -168,11 +184,22 @@ export default class ExampleScene3 extends Phaser.Scene {
 
 		this.text = this.add.text(0, 0, "Test", { font: "40px Courier" });
 
+		this.wood_back = this.add.sprite(650, 490, 'wood_back');
+		this.wood_back.setScale(0.25);
+		this.wood_back.setTint(0xaf825b);
 
 		this.enemy = new Enemy(this, 650, 490);
 
+		this.wood_block = this.add.sprite(650, 490, 'wood_block');
+		this.wood_block.setOrigin(0.53, 0.02);
+		this.wood_block.setScale(0.25);
+		this.wood_block.setTint(0xaf825b);
 
-		//Tumble
+		this.wood_front = this.add.sprite(650, 490, 'wood_front');
+		this.wood_front.setScale(0.25);
+		this.wood_front.setTint(0xaf825b);
+
+		// Tumble
 		this.tumble = this.add.sprite(-500, 460, 'tumble');
 		this.tumble.startY = this.tumble.y;
 		this.tumble.setScale(0.7);
@@ -236,7 +263,15 @@ export default class ExampleScene3 extends Phaser.Scene {
 		}, this);
 	}
 
+
 	update(time, delta) {
+		const start = 0.1267;
+		const end = 15.49;
+		if (this.music.getCurrentTime() > end) {
+			this.music.setSeek(this.music.getCurrentTime() - (end-start));
+		}
+
+
 		this.player.scaleY += (this.player.size - this.player.scaleY) * 0.1;
 		this.enemy.scaleY += (this.enemy.size - this.enemy.scaleY) * 0.1;
 
@@ -249,11 +284,15 @@ export default class ExampleScene3 extends Phaser.Scene {
 		}
 		this.prevBar = bar;
 
+		let musicTime = this.getMusicTime();
+		let deltaMusicTime = musicTime - this.lastMusicTime || 0;
+		this.lastMusicTime = musicTime;
+
 		//this.enemy.hit(this, 0.5);
-		this.enemy.update(this.getMusicTime());
+		this.enemy.update(musicTime, deltaMusicTime);
 
 		this.tumble.angle += 3;
-		this.tumble.y = this.tumble.startY - 50 * Math.abs(Math.cos(this.getMusicTime() * Math.PI / 2));
+		this.tumble.y = this.tumble.startY - 50 * Math.abs(Math.cos(musicTime * Math.PI / 2));
 		this.tumble.x += 5;
 		if (this.tumble.x > this.W+500) {
 			this.tumble.x = -500;
@@ -264,32 +303,21 @@ export default class ExampleScene3 extends Phaser.Scene {
 
 
 	getMusicTime() {
-		const music_offset = 0.127;
-		const music_speed = 60 / 125;
-
 		let time = this.music.getCurrentTime() + music_speed - music_offset;
 		return time / music_speed;
 	}
 
 	getBar() {
-		const music_offset = 0.127;
-		const music_speed = 60 / 125;
-
 		let time = this.music.getCurrentTime() + music_speed - music_offset;
 		return Math.floor(time / music_speed);
 	}
 
 	getBarTime() {
-		const music_offset = 0.127;
-		const music_speed = 60 / 125;
-
 		let time = this.music.getCurrentTime() + music_speed - music_offset;
 		return (time % music_speed) / music_speed;
 	}
 
 	getAccuracy() {
-		const music_offset = 0.127;
-		const music_speed = 60 / 125;
 		const input_delay = 0 * 0.155;
 
 		let time = (0.5 + this.getBarTime() - input_delay) % 1;
@@ -299,23 +327,25 @@ export default class ExampleScene3 extends Phaser.Scene {
 	getRating(accuracy) {
 		if (accuracy > 0) {
 			if (accuracy < 0.05)	return 'perfect';
-			if (accuracy < 0.11)	return 'good';
-			if (accuracy < 0.18)	return 'ok';
-			if (accuracy < 0.28)	return 'bad';
+			if (accuracy < 0.10)	return 'good';
+			if (accuracy < 0.15)	return 'ok';
+			//if (accuracy < 0.45)	return 'bad';
 		}
 		else {
 			if (accuracy > -0.05)	return 'perfect';
-			if (accuracy > -0.11)	return 'good';
-			if (accuracy > -0.18)	return 'ok';
-			if (accuracy > -0.28)	return 'bad';
+			if (accuracy > -0.10)	return 'good';
+			if (accuracy > -0.15)	return 'ok';
+			//if (accuracy > -0.45)	return 'bad';
 		}
-		return 'miss';
+		return 'bad';
 	}
 
 
 	onBeat(bar) {
 		this.player.scaleY *= 0.95;
 		this.enemy.scaleY *= 0.95;
+
+		this.enemy.onBeat(bar);
 
 		//[this.girl_one, this.girl_two, this.girl_three, this.girl_four][(this.getBar()-1)%4].play();
 		//this.cowbell.play();
@@ -336,6 +366,10 @@ export default class ExampleScene3 extends Phaser.Scene {
 	onShoot(event) {
 		let accuracy = this.getAccuracy();
 		let rating = this.getRating(accuracy);
+
+		if (!this.enemy.canHit()) {
+			rating = 'miss';
+		}
 
 		if (rating == 'miss') {
 			this.player.play('miss');

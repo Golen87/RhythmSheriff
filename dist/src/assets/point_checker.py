@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
+import sys
 
-image = Image.open("cat01.png")
+image = Image.open(sys.argv[1])
 WIDTH, HEIGHT = image.size
 
 red = []
