@@ -1,5 +1,5 @@
 export default {
-	'practice': {
+	'bgm_practice': {
 		offset: 0.127,
 		bpm: 125,
 		loop: true,

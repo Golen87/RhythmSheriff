@@ -43,8 +43,22 @@ export default class EvaluationScene extends Phaser.Scene {
 
 
 	onSpace() {
-		this.music.stop();
-		this.scene.start("EpilogueScene", this.result);
+		this.cameras.main.fadeEffect.start(true, 1000, 0x11, 0x11, 0x11);
+
+		this.tweens.add({
+			targets: this.music,
+			volume: 0,
+			duration: 1000
+		});
+
+		this.time.addEvent({
+			delay: 1500,
+			callback: function() {
+				this.music.stop();
+				this.scene.start("EpilogueScene", this.result);
+			},
+			callbackScope: this
+		});
 	}
 
 

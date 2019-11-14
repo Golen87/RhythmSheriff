@@ -7,12 +7,23 @@ export default class LevelScene extends Phaser.Scene {
 	}
 
 	create() {
-		this.music = new Music(this, 'puppywestern_2', { volume: 0.5 });
+		this.cameras.main.fadeEffect.start(false, 500, 0x11, 0x11, 0x11);
+		// 500 til skip text
+		// 500 til talk text
+
+		this.music = new Music(this, 'bgm_practice', { volume: 0.5 });
 		this.music.play();
 
 		this.music.once('complete', function(music) {
-			this.music.stop();
-			this.scene.start("EvaluationScene", {rating: 'good'});
+			this.cameras.main.fadeEffect.start(true, 1000, 0x11, 0x11, 0x11);
+			this.time.addEvent({
+				delay: 1500,
+				callback: function() {
+					this.music.stop();
+					this.scene.start("EvaluationScene", {rating: 'good'});
+				},
+				callbackScope: this
+			});
 		}, this);
 
 		this.music.on('beat', function(bar) {
@@ -21,10 +32,10 @@ export default class LevelScene extends Phaser.Scene {
 
 
 		this.soundList = [
-			'boy_one',
-			'boy_two',
-			'boy_three',
-			'boy_four',
+			//'boy_one',
+			//'boy_two',
+			//'boy_three',
+			//'boy_four',
 			'girl_one',
 			'girl_two',
 			'girl_three',
@@ -263,13 +274,7 @@ export default class LevelScene extends Phaser.Scene {
 		}
 
 		// Cooldown until holsting the gun
-		this.player.holsterTime = (Math.ceil(this.music.getBarTime() + 1.25 - 1) % this.music.maxBar) + 1;
-
-
-		//this.player.setTexture('dog_shoot');
-		//var timer = this.time.delayedCall(150, function() {
-		//	this.player.setTexture('dog');
-		//}, null, this);
+		this.player.holsterTime = Math.ceil(this.music.getBarTime() + 1.25) % this.music.maxBar;
 	}
 
 

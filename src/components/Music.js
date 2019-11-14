@@ -15,10 +15,12 @@ export default class Music extends Phaser.Sound.WebAudioSound {
 		if (this.loop) {
 			this.start = custom.start;
 			this.end = custom.end;
+			this.setLoop(true);
 		}
 		else {
 			this.start = this.offset;
 			this.end = this.duration;
+			this.setLoop(false);
 		}
 
 		this.speed = 60 / this.bpm;

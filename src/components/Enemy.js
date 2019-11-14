@@ -160,7 +160,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 			this.scene.destroy_pieces.play();
 
 		this.health = 0;
-		this.hidingTime = (Math.ceil(this.scene.music.getBarTime() + 0.25 - 1) % this.scene.music.maxBar) + 1;
+		this.hidingTime = Math.ceil(this.scene.music.getBarTime() + 0.25) % this.scene.music.maxBar;
 	}
 
 	update(time, delta) {

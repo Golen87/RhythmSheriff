@@ -27,38 +27,34 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.spritesheet('bullet_hole', 'assets/images/bullet_hole/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
 
 
-		/* Fonts */
-		this.load.bitmapFont('rye', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
-
-
 		/* Audio */
-		this.load.audio('bgm_epilogue_bad', 'assets/music/BGM_EPILOGUE_BAD.wav');
-		this.load.audio('bgm_epilogue_good', 'assets/music/BGM_EPILOGUE_GOOD.wav');
-		this.load.audio('bgm_epilogue_great', 'assets/music/BGM_EPILOGUE_GREAT.wav');
-		this.load.audio('bgm_game_over', 'assets/music/BGM_GAME_OVER.wav');
-		this.load.audio('bgm_perfect_fan', 'assets/music/BGM_PERFECT_FAN.wav');
-		this.load.audio('jingle_anime', 'assets/music/JINGLE_ANIME.wav');
-		this.load.audio('jingle_epilogue_bad', 'assets/music/JINGLE_EPILOGUE_BAD.wav');
-		this.load.audio('jingle_epilogue_good', 'assets/music/JINGLE_EPILOGUE_GOOD.wav');
-		this.load.audio('jingle_epilogue_great', 'assets/music/JINGLE_EPILOGUE_GREAT.wav');
-		this.load.audio('practice', 'assets/music/practice.ogg');
-		this.load.audio('puppywestern_2_loop', 'assets/music/puppywestern_2_loop.mp3');
-		this.load.audio('puppywestern_2_loop_nocues', 'assets/music/puppywestern_2_loop_nocues.mp3');
+		this.load.audio('bgm_epilogue_bad', 'assets/music/BGM_EPILOGUE_BAD.ogg');
+		this.load.audio('bgm_epilogue_good', 'assets/music/BGM_EPILOGUE_GOOD.ogg');
+		this.load.audio('bgm_epilogue_great', 'assets/music/BGM_EPILOGUE_GREAT.ogg');
+		//this.load.audio('bgm_game_over', 'assets/music/BGM_GAME_OVER.ogg');
+		this.load.audio('bgm_perfect_fan', 'assets/music/BGM_PERFECT_FAN.ogg');
+		this.load.audio('jingle_anime', 'assets/music/JINGLE_ANIME.ogg');
+		this.load.audio('jingle_epilogue_bad', 'assets/music/JINGLE_EPILOGUE_BAD.ogg');
+		this.load.audio('jingle_epilogue_good', 'assets/music/JINGLE_EPILOGUE_GOOD.ogg');
+		this.load.audio('jingle_epilogue_great', 'assets/music/JINGLE_EPILOGUE_GREAT.ogg');
+		this.load.audio('bgm_practice', 'assets/music/BGM_PRACTICE.ogg');
+		//this.load.audio('puppywestern_2_loop', 'assets/music/puppywestern_2_loop.mp3');
+		//this.load.audio('puppywestern_2_loop_nocues', 'assets/music/puppywestern_2_loop_nocues.mp3');
 		this.load.audio('puppywestern_2', 'assets/music/puppywestern_2.mp3');
-		this.load.audio('puppywestern_2_nocues', 'assets/music/puppywestern_2_nocues.mp3');
-		this.load.audio('glow', 'assets/music/Glow.mp3');
+		//this.load.audio('puppywestern_2_nocues', 'assets/music/puppywestern_2_nocues.mp3');
+		//this.load.audio('glow', 'assets/music/Glow.mp3');
 
 		this.load.audio('cowbell', 'assets/audio/cowbell.wav');
-		this.load.audio('miss', 'assets/audio/Sample 324.wav');
-		this.load.audio('shoot_1', 'assets/audio/Sample 282.wav');
-		this.load.audio('shoot_2', 'assets/audio/Sample 288.wav');
-		this.load.audio('shoot_3', 'assets/audio/Sample 289.wav');
-		this.load.audio('shoot_4', 'assets/audio/Sample 283.wav');
-		this.load.audio('karate_kick_miss', 'assets/audio/Sample 286.wav');
-		this.load.audio('karate_kick_swing', 'assets/audio/Sample 287.wav');
-		this.load.audio('target_destroyed_1', 'assets/audio/Sample 290.wav');
-		this.load.audio('target_destroyed_2', 'assets/audio/Sample 291.wav');
-		this.load.audio('karate_bomb_kick', 'assets/audio/Sample 292.wav');
+		this.load.audio('miss', 'assets/audio/miss.wav');
+		this.load.audio('shoot_1', 'assets/audio/shoot_1.wav');
+		this.load.audio('shoot_2', 'assets/audio/shoot_2.wav');
+		this.load.audio('shoot_3', 'assets/audio/shoot_3.wav');
+		this.load.audio('shoot_4', 'assets/audio/shoot_4.wav');
+		this.load.audio('karate_kick_miss', 'assets/audio/karate_kick_miss.wav');
+		this.load.audio('karate_kick_swing', 'assets/audio/karate_kick_swing.wav');
+		this.load.audio('target_destroyed_1', 'assets/audio/target_destroyed_1.wav');
+		this.load.audio('target_destroyed_2', 'assets/audio/target_destroyed_2.wav');
+		this.load.audio('karate_bomb_kick', 'assets/audio/karate_bomb_kick.wav');
 
 		this.load.audio('destroy_pieces', 'assets/audio/destroy_pieces.wav');
 		this.load.audio('eject', 'assets/audio/eject.wav');
@@ -69,14 +65,14 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('robot_withdraw', 'assets/audio/robot_withdraw.wav');
 		this.load.audio('flip', 'assets/audio/flip.wav');
 
-		this.load.audio('boy_one', 'assets/audio/Sample 692.wav');
-		this.load.audio('boy_two', 'assets/audio/Sample 694.wav');
-		this.load.audio('boy_three', 'assets/audio/Sample 693.wav');
-		this.load.audio('boy_four', 'assets/audio/Sample 691.wav');
-		this.load.audio('girl_one', 'assets/audio/Sample 758.wav');
-		this.load.audio('girl_two', 'assets/audio/Sample 760.wav');
-		this.load.audio('girl_three', 'assets/audio/Sample 759.wav');
-		this.load.audio('girl_four', 'assets/audio/Sample 757.wav');
+		//this.load.audio('boy_one', 'assets/audio/boy_one.wav');
+		//this.load.audio('boy_two', 'assets/audio/boy_two.wav');
+		//this.load.audio('boy_three', 'assets/audio/boy_three.wav');
+		//this.load.audio('boy_four', 'assets/audio/boy_four.wav');
+		this.load.audio('girl_one', 'assets/audio/girl_one.wav');
+		this.load.audio('girl_two', 'assets/audio/girl_two.wav');
+		this.load.audio('girl_three', 'assets/audio/girl_three.wav');
+		this.load.audio('girl_four', 'assets/audio/girl_four.wav');
 
 
 		//this.load.audio('70', 'assets/audio/Sample 70.wav'); // audience_boo
