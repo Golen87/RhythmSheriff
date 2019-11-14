@@ -1,24 +1,23 @@
 @font-face {
-    font-family: 'Peepo';
-    src: url('Peepo.woff2') format('woff2'),
-        url('Peepo.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'Peepo';
+	src: url('Peepo.woff2') format('woff2'),
+		url('Peepo.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'Wii';
-    src: url('WiiNTLGPGothic-Regular.woff2') format('woff2'),
-        url('WiiNTLGPGothic-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'Wii';
+	src: url('WiiNTLGPGothic-Regular.woff2') format('woff2'),
+		url('WiiNTLGPGothic-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'Texas Tango';
-    src: url('TexasTangoBOLDPERSONALUSE.woff2') format('woff2'),
-        url('TexasTangoBOLDPERSONALUSE.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
+	font-family: 'Texas Tango';
+	src: url('TexasTangoBOLDPERSONALUSE.woff2') format('woff2'),
+		url('TexasTangoBOLDPERSONALUSE.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
 }
-
