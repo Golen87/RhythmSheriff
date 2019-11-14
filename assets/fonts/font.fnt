@@ -1,0 +1,29 @@
+<font>
+  <info face="font" size="150" bold="0" italic="0" charset="" unicode="" stretchH="100" smooth="1" aa="1" padding="2,2,2,2" spacing="0,0" outline="0"/>
+  <common lineHeight="214" base="110" scaleW="290" scaleH="442" pages="1" packed="0"/>
+  <pages>
+    <page id="0" file="font.png"/>
+  </pages>
+  <chars count="10">
+    <char id="82" x="2" y="2" width="101" height="120" xoffset="1" yoffset="0" xadvance="101" page="0" chnl="15"/>
+    <char id="104" x="2" y="124" width="90" height="99" xoffset="-1" yoffset="18" xadvance="91" page="0" chnl="15"/>
+    <char id="121" x="2" y="225" width="75" height="101" xoffset="6" yoffset="18" xadvance="64" page="0" chnl="15"/>
+    <char id="116" x="2" y="328" width="102" height="98" xoffset="0" yoffset="19" xadvance="76" page="0" chnl="15"/>
+    <char id="109" x="79" y="225" width="125" height="98" xoffset="1" yoffset="19" xadvance="126" page="0" chnl="15"/>
+    <char id="83" x="106" y="325" width="106" height="115" xoffset="1" yoffset="0" xadvance="90" page="0" chnl="15"/>
+    <char id="101" x="94" y="124" width="85" height="96" xoffset="1" yoffset="20" xadvance="82" page="0" chnl="15"/>
+    <char id="114" x="105" y="2" width="85" height="101" xoffset="1" yoffset="19" xadvance="85" page="0" chnl="15"/>
+    <char id="105" x="181" y="105" width="37" height="96" xoffset="8" yoffset="20" xadvance="52" page="0" chnl="15"/>
+    <char id="102" x="192" y="2" width="96" height="97" xoffset="-3" yoffset="19" xadvance="72" page="0" chnl="15"/>
+    <char id="32" x="0" y="0" width="0" height="0" xoffset="-3" yoffset="19" xadvance="60" page="0" chnl="15"/>
+  </chars>
+  <kernings count="7">
+    <kerning first="82" second="116" amount="-1"/>
+    <kerning first="82" second="121" amount="1"/>
+    <kerning first="83" second="109" amount="3"/>
+    <kerning first="101" second="82" amount="3"/>
+    <kerning first="101" second="114" amount="3"/>
+    <kerning first="114" second="116" amount="-1"/>
+    <kerning first="114" second="121" amount="1"/>
+  </kernings>
+</font>

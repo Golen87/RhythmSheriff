@@ -1,18 +1,19 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
-import ExampleScene1 from "./ExampleScene1.js"
-import ExampleScene2 from "./ExampleScene2.js"
-import ExampleScene3 from "./ExampleScene3.js"
+import PreloadScene from "./scenes/PreloadScene.js"
+import TitleScene from "./scenes/TitleScene.js"
+import LevelScene from "./scenes/LevelScene.js"
+import EvaluationScene from "./scenes/EvaluationScene.js"
+import EpilogueScene from "./scenes/EpilogueScene.js"
 
 const config = {
 	type: Phaser.AUTO,
-	parent: "Fall Game Jam",
-	width: 800,
+	parent: "RhythmSheriff",
+	width: 1000,
 	height: 600,
 	scale: {
 		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
-		parent: "thegame",
+		parent: "game",
 		width: 1000,
 		height: 600
 	},
@@ -26,9 +27,11 @@ const config = {
 		}
 	},
 	scene: [
-		ExampleScene3,
-		ExampleScene1,
-		ExampleScene2,
+		PreloadScene,
+		TitleScene,
+		LevelScene,
+		EvaluationScene,
+		EpilogueScene,
 	]
 };
 
