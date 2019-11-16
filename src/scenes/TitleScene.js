@@ -9,13 +9,13 @@ export default class TitleScene extends Phaser.Scene {
 		this.cameras.main.setBackgroundColor(0x111111);
 		this.cameras.main.fadeEffect.start(false, 100, 0x11, 0x11, 0x11);
 
-		// Background
+
+		/* Graphics */
+
 		let bg = this.add.image(this.CX, this.CY, 'title');
 		this.fitToScreen(bg);
 
-
 		this.circle = this.add.circle(this.CX, 223, 200, 0xffffff, 0.15);
-
 
 		this.titleRhythmBg = this.add.text(this.CX, 220, " Rhythm ", { font: "130px 'Texas Tango'", color: "white", stroke: "#ffffffdd", strokeThickness: 6 });
 		this.titleRhythmBg.setOrigin(0.5, 0.93);
@@ -33,8 +33,6 @@ export default class TitleScene extends Phaser.Scene {
 
 		this.titleRhythm.setFill(gradient);
 		this.titleSheriff.setFill(gradient);
-		//let text = this.add.text(300, 350, "Hello this is Wii font!", { font: "40px Wii", stroke: "#000000", strokeThickness: 10 });
-		//let text2 = this.add.text(300, 400, "Hello this is Peepo font!", { font: "40px Peepo", stroke: "#000000", strokeThickness: 10 });
 
 		const Y = 223;
 		let lineL = this.add.line(0, 0, this.CX-330, Y, this.CX+290, Y, 0xffffff);
@@ -59,47 +57,49 @@ export default class TitleScene extends Phaser.Scene {
 		this.graphics.fillRect(this.CX+310, Y-6, 24, 12);
 
 
-		// Music
+		/* Music */
+
 		if (!this.music) {
 			this.music = new Music(this, 'jingle_anime', { volume: 0.5 });
+
+			this.music.on('beat', this.onBeat, this);
+
+			this.music.once('complete', function(music) {
+				this.cameras.main.fadeEffect.start(true, 100, 0x11, 0x11, 0x11);
+				this.time.addEvent({
+					delay: 1000,
+					callback: function() {
+						this.music.stop();
+						this.scene.start("LevelScene");
+					},
+					callbackScope: this
+				});
+			}, this);
 		}
 		this.music.play();
 
-		this.music.on('beat', this.onBeat, this);
 
-		this.music.once('complete', function(music) {
-			this.cameras.main.fadeEffect.start(true, 100, 0x11, 0x11, 0x11);
-			this.time.addEvent({
-				delay: 1000,
-				callback: function() {
-					this.music.stop();
-					this.scene.start("LevelScene");
-				},
-				callbackScope: this
-			});
-		}, this);
-
+		/* Debugging */
 
 		this.input.keyboard.once('keydown-ONE', function() {
 			this.music.stop();
 			this.scene.start("EvaluationScene", {rating: 'bad'});
 		}, this);
-
 		this.input.keyboard.once('keydown-TWO', function() {
 			this.music.stop();
 			this.scene.start("EvaluationScene", {rating: 'good'});
 		}, this);
-
 		this.input.keyboard.once('keydown-THREE', function() {
 			this.music.stop();
 			this.scene.start("EvaluationScene", {rating: 'great'});
 		}, this);
-
 		this.input.keyboard.once('keydown-FOUR', function() {
 			this.music.stop();
 			this.scene.start("EvaluationScene", {rating: 'perfect'});
 		}, this);
 
+
+		/* Animations */
 
 		this.titleRhythm.x -= 50;
 		this.titleRhythmBg.x -= 50;

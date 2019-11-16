@@ -1,5 +1,6 @@
 import Enemy from "./../components/Enemy.js";
 import Music from "./../components/Music.js";
+import DialogueBox from "./../components/DialogueBox.js";
 
 export default class LevelScene extends Phaser.Scene {
 	constructor() {
@@ -12,19 +13,9 @@ export default class LevelScene extends Phaser.Scene {
 		// 500 til talk text
 
 		this.music = new Music(this, 'bgm_practice', { volume: 0.5 });
-		this.music.play();
+		//this.music.play();
 
-		this.music.once('complete', function(music) {
-			this.cameras.main.fadeEffect.start(true, 1000, 0x11, 0x11, 0x11);
-			this.time.addEvent({
-				delay: 1500,
-				callback: function() {
-					this.music.stop();
-					this.scene.start("EvaluationScene", {rating: 'good'});
-				},
-				callbackScope: this
-			});
-		}, this);
+		this.music.once('complete', this.onLevelComplete, this);
 
 		this.music.on('beat', function(bar) {
 			this.onBeat(bar);
@@ -40,6 +31,11 @@ export default class LevelScene extends Phaser.Scene {
 			'girl_two',
 			'girl_three',
 			'girl_four',
+			'audience_boo',
+			'audience_gasp',
+			'audience_clap',
+			'audience_cheer',
+			'audience_cheer2',
 
 			'cowbell',
 			'miss',
@@ -58,6 +54,36 @@ export default class LevelScene extends Phaser.Scene {
 			'robot_withdraw',
 			'flip',
 			'destroy_pieces',
+
+			'Back',
+			'ButtonDown',
+			'ButtonUp',
+			'Clap',
+			'ClickHigh',
+			'ClickLow',
+			'Cowbell',
+			'Crow',
+			'Keypress',
+			'MinigameClose',
+			'MinigameHover',
+			'MinigameLaunch',
+			'MinigameOpen',
+			'MinigameWindow',
+			'Miss2',
+			'Miss3',
+			'Miss4',
+			'Miss',
+			'Nature',
+			'Page',
+			'Punch',
+			'RatingOK',
+			'Results1',
+			'Results2',
+			'Shrink',
+			'TapDown',
+			'TapUp',
+			'Woodblock2',
+			'Woodblock',
 		];
 		for (var i = 0; i < this.soundList.length; i++) {
 			this[this.soundList[i]] = this.sound.add(this.soundList[i], { volume: 0.5 });
@@ -67,17 +93,17 @@ export default class LevelScene extends Phaser.Scene {
 		this.robot_eject.setVolume(0.3);
 
 
+		/* Graphics */
 
 		// Background
 		let bg = this.add.image(this.CX, this.CY, 'background');
 		this.fitToScreen(bg);
 
-
 		this.text = this.add.text(0, 0, "Test", { font: "40px Courier" });
 
 		this.wood_back = this.add.sprite(650, 490, 'wood_back');
 		this.wood_back.setScale(0.25);
-		this.wood_back.setTint(0xaf825b);
+		this.wood_back.setTint(0x936b48);
 
 		this.enemy = new Enemy(this, 650, 490);
 
@@ -88,19 +114,22 @@ export default class LevelScene extends Phaser.Scene {
 
 		this.wood_front = this.add.sprite(650, 490, 'wood_front');
 		this.wood_front.setScale(0.25);
-		this.wood_front.setTint(0xaf825b);
+		this.wood_front.setTint(0x936b48);
 
 		// Tumble
 		this.tumble = this.add.sprite(-500, 460, 'tumble');
 		this.tumble.startY = this.tumble.y;
 		this.tumble.setScale(0.7);
 
-
+		// Player
 		this.player = this.add.sprite(280, 570, 'dog', 0);
 		this.player.setOrigin(0.5, 1.0);
 		this.player.size = 0.6;
 		this.player.setScale(this.player.size);
 		this.player.setTint(0x7777ff);
+
+
+		/* Player animations */
 
 		this.anims.create({
 			key: 'small_equip',
@@ -156,12 +185,34 @@ export default class LevelScene extends Phaser.Scene {
 		});
 
 
-		this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-		this.keySpace.on('down', this.onShoot, this);
+		/* Input */
 
-		this.input.on('pointerdown', function(pointer) {
-			this.onShoot(pointer);
-		}, this);
+		if (!this._listeners) {
+			this._listeners = true;
+
+			let keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+			keySpace.on('down', this.onTapDown, this);
+			keySpace.on('up', this.onTapUp, this);
+			this.input.on('pointerdown', this.onTapDown, this);
+			this.input.on('pointerup', this.onTapUp, this);
+
+			this.input.keyboard.on('keydown-S', this.onSkipDown, this);
+			this.input.keyboard.on('keyup-S', this.onSkipUp, this);
+		}
+
+
+		/* Tutorial */
+
+		this.dialogueBox = new DialogueBox(this, 680, 200, 500, 240);
+		this.dialogueBox.setAlpha(0);
+
+		this.dialogueList = [
+			"Magna pariatur anim dolore tempor.",
+			"Dolore dolore ad elit. Lorem ipsum duis elit veniam non.",
+			"Lorem ipsum minim est excepteur labore esse et duis consectetur culpa minim occaecat.",
+		];
+
+		this.addEvent(1200, this.progress);
 	}
 
 
@@ -186,6 +237,12 @@ export default class LevelScene extends Phaser.Scene {
 		}
 
 		//this.enemy.sprite.rotateX(this.music.getBarTime());
+	}
+
+
+
+	addEvent(delay, callback, callbackScope=this) {
+		return this.time.addEvent({delay, callback, callbackScope});
 	}
 
 
@@ -229,6 +286,10 @@ export default class LevelScene extends Phaser.Scene {
 			this.karate_kick_swing.play();
 		}
 
+		if (bar == 24) {
+			this.progress();
+		}
+
 		//this.shoot_2.play();
 		//this.shoot_4.play();
 		//this.karate_kick_miss.play();
@@ -237,7 +298,54 @@ export default class LevelScene extends Phaser.Scene {
 		//this.karate_bomb_kick.play();
 	}
 
-	onShoot(event) {
+	onTapDown(event) {
+		if (this.music.isPlaying) {
+			this.onShoot();
+		}
+		else {
+			this.dialogueBox.tapDown();
+		}
+	}
+
+	onTapUp(event) {
+		if (this.music.isPlaying) {
+		}
+		else {
+			let success = this.dialogueBox.tapUp();
+			if (success) {
+				this.addEvent(500, this.progress);
+			}
+		}
+	}
+
+	onSkipDown(event) {
+		this.ButtonDown.play();
+	}
+
+	onSkipUp(event) {
+		this.ButtonUp.play();
+	}
+
+	progress() {
+		if (this.music.isPlaying) {
+			this.music.stop();
+			//this.audience_boo.play();
+			//this.audience_gasp.play();
+			this.audience_clap.play();
+			//this.audience_cheer.play();
+			//this.audience_cheer2.play();
+
+			this.addEvent(2000, this.onLevelComplete);
+		}
+		else if (this.dialogueList.length > 0) {
+			this.dialogueBox.show(this.dialogueList.shift());
+		}
+		else {
+			this.music.play();
+		}
+	}
+
+	onShoot() {
 		let accuracy = this.getAccuracy();
 		let rating = this.getRating(accuracy);
 
@@ -275,6 +383,14 @@ export default class LevelScene extends Phaser.Scene {
 
 		// Cooldown until holsting the gun
 		this.player.holsterTime = Math.ceil(this.music.getBarTime() + 1.25) % this.music.maxBar;
+	}
+
+	onLevelComplete() {
+		this.cameras.main.fadeEffect.start(true, 500, 0x11, 0x11, 0x11);
+		this.addEvent(500, function() {
+			this.music.stop();
+			this.scene.start("EvaluationScene", {rating: 'good'});
+		});
 	}
 
 

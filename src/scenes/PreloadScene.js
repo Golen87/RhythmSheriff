@@ -65,6 +65,36 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('robot_withdraw', 'assets/audio/robot_withdraw.wav');
 		this.load.audio('flip', 'assets/audio/flip.wav');
 
+		this.load.audio('Back', 'assets/audio/Mato/Back.wav');
+		this.load.audio('ButtonDown', 'assets/audio/Mato/ButtonDown.wav');
+		this.load.audio('ButtonUp', 'assets/audio/Mato/ButtonUp.wav');
+		this.load.audio('Clap', 'assets/audio/Mato/Clap.wav');
+		this.load.audio('ClickHigh', 'assets/audio/Mato/ClickHigh.wav');
+		this.load.audio('ClickLow', 'assets/audio/Mato/ClickLow.wav');
+		this.load.audio('Cowbell', 'assets/audio/Mato/Cowbell.wav');
+		this.load.audio('Crow', 'assets/audio/Mato/Crow.wav');
+		this.load.audio('Keypress', 'assets/audio/Mato/Keypress.wav');
+		this.load.audio('MinigameClose', 'assets/audio/Mato/MinigameClose.wav');
+		this.load.audio('MinigameHover', 'assets/audio/Mato/MinigameHover.wav');
+		this.load.audio('MinigameLaunch', 'assets/audio/Mato/MinigameLaunch.wav');
+		this.load.audio('MinigameOpen', 'assets/audio/Mato/MinigameOpen.wav');
+		this.load.audio('MinigameWindow', 'assets/audio/Mato/MinigameWindow.wav');
+		this.load.audio('Miss2', 'assets/audio/Mato/Miss2.wav');
+		this.load.audio('Miss3', 'assets/audio/Mato/Miss3.wav');
+		this.load.audio('Miss4', 'assets/audio/Mato/Miss4.wav');
+		this.load.audio('Miss', 'assets/audio/Mato/Miss.wav');
+		this.load.audio('Nature', 'assets/audio/Mato/Nature.wav');
+		this.load.audio('Page', 'assets/audio/Mato/Page.wav');
+		this.load.audio('Punch', 'assets/audio/Mato/Punch.wav');
+		this.load.audio('RatingOK', 'assets/audio/Mato/RatingOK.wav');
+		this.load.audio('Results1', 'assets/audio/Mato/Results1.wav');
+		this.load.audio('Results2', 'assets/audio/Mato/Results2.wav');
+		this.load.audio('Shrink', 'assets/audio/Mato/Shrink.wav');
+		this.load.audio('TapDown', 'assets/audio/Mato/TapDown.wav');
+		this.load.audio('TapUp', 'assets/audio/Mato/TapUp.wav');
+		this.load.audio('Woodblock2', 'assets/audio/Mato/Woodblock2.wav');
+		this.load.audio('Woodblock', 'assets/audio/Mato/Woodblock.wav');
+
 		//this.load.audio('boy_one', 'assets/audio/boy_one.wav');
 		//this.load.audio('boy_two', 'assets/audio/boy_two.wav');
 		//this.load.audio('boy_three', 'assets/audio/boy_three.wav');
@@ -73,13 +103,13 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('girl_two', 'assets/audio/girl_two.wav');
 		this.load.audio('girl_three', 'assets/audio/girl_three.wav');
 		this.load.audio('girl_four', 'assets/audio/girl_four.wav');
+		this.load.audio('audience_boo', 'assets/audio/audience_boo.wav');
+		this.load.audio('audience_gasp', 'assets/audio/audience_gasp.wav');
+		this.load.audio('audience_clap', 'assets/audio/audience_clap.wav');
+		this.load.audio('audience_cheer', 'assets/audio/audience_cheer.wav');
+		this.load.audio('audience_cheer2', 'assets/audio/audience_cheer2.wav');
 
 
-		//this.load.audio('70', 'assets/audio/Sample 70.wav'); // audience_boo
-		//this.load.audio('71', 'assets/audio/Sample 71.wav'); // audience_cheer
-		//this.load.audio('72', 'assets/audio/Sample 72.wav'); // audience_clap
-		//this.load.audio('73', 'assets/audio/Sample 73.wav'); // audience_cheer2
-		//this.load.audio('74', 'assets/audio/Sample 74.wav'); // audience_gasp
 		//this.load.audio('82', 'assets/audio/Sample 82.wav'); // click
 		//this.load.audio('103', 'assets/audio/Sample 103.wav'); // cowbell
 		//this.load.audio('131', 'assets/audio/Sample 131.wav'); // hihat
@@ -134,6 +164,11 @@ export default class PreloadScene extends Phaser.Scene {
 		//this.load.audio('599', 'assets/audio/Sample 599.wav'); // "yoh"
 		//this.load.audio('609', 'assets/audio/Sample 609.wav'); // menu click
 		//this.load.audio('612', 'assets/audio/Sample 612.wav'); // game over
+
+
+		/* Plug-ins */
+
+        this.load.plugin('rexroundrectangleplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/plugins/dist/rexroundrectangleplugin.min.js', true);    
 	}
 
 	onLoadProgress(progress) {
@@ -141,8 +176,9 @@ export default class PreloadScene extends Phaser.Scene {
 	}
 
 	create() {
-		//this.scene.start("LevelScene");
 		this.scene.start("TitleScene");
+		//this.scene.start("LevelScene");
+		//this.scene.start("EvaluationScene", {rating:'good'});
 	}
 
 	update(time, delta) {

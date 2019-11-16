@@ -27,36 +27,83 @@ export default class EpilogueScene extends Phaser.Scene {
 		this.music.play();
 
 
-		let text = this.add.text(this.CX, this.CY, "<Image>", { font: "40px Courier" });
-		text.setOrigin(0.5);
-		let text2 = this.add.text(this.CX, this.CY+100, result.rating + " description", { font: "40px Courier" });
-		text2.setOrigin(0.5);
-		let text3 = this.add.text(this.CX, this.H-20, '[SPACE]', { font: "40px Courier" });
-		text3.setOrigin(0.5, 1);
+		this.text1 = this.add.text(this.CX, this.CY-100, "<Image>", { font: "bold 40px Wii" });
+		this.text1.setOrigin(0.5);
+		this.text2 = this.add.text(this.CX, this.CY+100, result.rating + " description", { font: "bold 40px Wii" });
+		this.text2.setOrigin(0.5);
+		this.tapText = this.add.text(this.CX, this.H-20, '[tap]', { font: "25px Wii" });
+		this.tapText.setOrigin(0.5, 1);
+		this.tapText.setAlpha(0);
 
 
-		this.input.keyboard.once('keydown-SPACE', this.onSpace, this);
+		this.setupInput();
+		this.addEvent(200, this.enableTap);
 	}
 
-	update(time, delta) {
+
+	setupInput() {
+		this.allowTap = false;
+		this.hasTapped = false;
+		if (!this._listeners) {
+			this._listeners = true;
+
+			let keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+			keySpace.on('down', this.onTapDown, this);
+			keySpace.on('up', this.onTapUp, this);
+			this.input.on('pointerdown', this.onTapDown, this);
+			this.input.on('pointerup', this.onTapUp, this);
+
+			this.TapDown = this.sound.add('TapDown', { volume: 0.5 });
+			this.TapUp = this.sound.add('TapUp', { volume: 0.5 });
+		}
+	}
+
+	enableTap() {
+		this.allowTap = true;
+		this.tapText.setAlpha(1);
+	}
+
+	disableTap() {
+		this.allowTap = false;
+		this.hasTapped = false;
+	}
+
+	onTapDown(event) {
+		if (this.allowTap) {
+			this.hasTapped = true;
+			this.TapDown.play();
+		}
+	}
+
+	onTapUp(event) {
+		if (this.allowTap && this.hasTapped) {
+			this.disableTap();
+
+			this.TapUp.play();
+			this.cameras.main.fadeEffect.start(true, 500, 0x11, 0x11, 0x11);
+
+			this.tweens.add({
+				targets: this.music,
+				volume: 0,
+				duration: 1000
+			});
+
+			this.time.addEvent({
+				delay: 2000,
+				callback: function() {
+					this.music.stop();
+					this.scene.start("TitleScene");
+				},
+				callbackScope: this
+			});
+		}
 	}
 
 
-	onSpace() {
-		this.cameras.main.fadeEffect.start(true, 1000, 0x11, 0x11, 0x11);
-
-		this.tweens.add({
-			targets: this.music,
-			volume: 0,
-			duration: 1000
-		});
-
-		this.time.addEvent({
-			delay: 1500,
-			callback: function() {
-				this.music.stop();
-				this.scene.start("TitleScene");
-			},
+	addEvent(delay, callback) {
+		return this.time.addEvent({
+			delay: delay,
+			callback: callback,
 			callbackScope: this
 		});
 	}
