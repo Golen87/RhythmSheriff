@@ -1,4 +1,4 @@
-export default class Enemy extends Phaser.GameObjects.Container {
+export default class Enemy2 extends Phaser.GameObjects.Container {
 	constructor(scene, x, y, type) {
 		super(scene, x, y);
 		scene.add.existing(this);
@@ -53,15 +53,18 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 		if (!this.isHiding) {
 			let t1 = this.getInterval(myTime, 0.0, 1.0);
-			let t2 = this.getInterval(myTime, 1.0, 2.0-0.05);
-			let t3 = this.getInterval(myTime, 2.5, 3.0);
+			let t2 = this.getInterval(myTime, 1.0, 1.5-0.05);
+			let t3 = this.getInterval(myTime, 2.0, 2.5);
 			let e1 = Phaser.Math.Easing.Cubic.Out(t1);
 			let e2 = Phaser.Math.Easing.Cubic.In(t2);
 			let e3 = Phaser.Math.Easing.Cubic.In(t3);
 			this.hideFac = 1 - 0.6 * e1 - 0.4 * e2 + 1.0 * e3;
-			let t4 = this.getInterval(myTime, 0.5, 2.0-0.05);
-			let e4 = Phaser.Math.Easing.Circular.In(t4);
-			this.turnFac = e4;
+			let t4 = this.getInterval(myTime, 0.25, 1.25);
+			//let t4 = this.getInterval(myTime, 0.20, 1.5);
+			let e4 = Phaser.Math.Easing.Sine.InOut(t4);
+			let t5 = this.getInterval(myTime, 0.75, 1.5-0.05);
+			let e5 = Phaser.Math.Easing.Sine.In(t5);
+			this.turnFac = 0*e4 + e5;
 		}
 		else {
 			this.hideFac = 1;
@@ -71,9 +74,9 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		let hideValue = this.hideFac;
 		let turnValue = this.turnFac - this.spinFac;
 
-		let t = 1 - this.getInterval(myTime, 0.0, 2.0);
+		let t = 1 - this.getInterval(myTime, 0.0, 1.5);
 		let e = Phaser.Math.Easing.Cubic.Out(t);
-		this.x = this.startX + e * (this.invert?1:-1) * 30 * Math.cos(0.5*myTime * (2*Math.PI));
+		this.x = this.startX + e * (this.invert?1:-1) * 30 * Math.sin(myTime * (2*Math.PI));
 		this.y = this.startY + this.hideDist * hideValue;
 
 		this.scaleX = this.size * Math.cos(turnValue * Math.PI);
@@ -104,12 +107,12 @@ export default class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	appear(time, invert) {
-		this.hidingTime = (time + 3) % this.scene.currentMusic.maxBar;
-		this.turningTime = (time + 1) % this.scene.currentMusic.maxBar;
+		this.hidingTime = (time + 2.5) % this.scene.currentMusic.maxBar;
+		this.turningTime = (time + 0.5) % this.scene.currentMusic.maxBar;
 
 		if (this.isHiding) {
 			this.appearedOn = time;
-			this.targetTime = time + 2;
+			this.targetTime = time + 1.5;
 			this.isHiding = false;
 			this.isTurned = false;
 			this.turnFac = 0;
@@ -125,7 +128,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 			}
 
 			//this.scene.robot_eject.play();
-			this.scene.cat_cue.play();
+			this.scene.rat_cue.play();
 		}
 	}
 
@@ -165,7 +168,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		if (this.isHiding) {
 			return false;
 		}
-		if (myTime > 0.5 && myTime < 2.8) {
+		if (myTime > 0.25 && myTime < 2.3) {
 			return true;
 		}
 		return false;

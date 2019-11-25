@@ -1,5 +1,6 @@
 import Player from "./../components/Player.js";
 import Enemy from "./../components/Enemy.js";
+import Enemy2 from "./../components/Enemy2.js";
 import Music from "./../components/Music.js";
 import Sound from "./../components/Sound.js";
 import DialogueBox from "./../components/DialogueBox.js";
@@ -44,8 +45,8 @@ export default class LevelScene extends Phaser.Scene {
 		//this.robot_eject.setVolume(0.5);
 		//this.robot_withdraw.setVolume(0.3);
 
-		this.cat_cue = new Sound(this, 'cat_cue', { volume: 0.8 });
-		this.rat_cue = new Sound(this, 'rat_cue', { volume: 0.8 });
+		this.cat_cue = new Sound(this, 'cat_cue', { volume: 1.0 });
+		this.rat_cue = new Sound(this, 'rat_cue', { volume: 1.0 });
 
 
 		/* Graphics */
@@ -61,10 +62,10 @@ export default class LevelScene extends Phaser.Scene {
 		this.wood_back.setTint(0x936b48);
 
 		this.enemies = [
-			new Enemy(this, 650, 490),
-			new Enemy(this, 650, 490),
-			new Enemy(this, 650, 490),
-			new Enemy(this, 650, 490),
+			new Enemy(this, 650, 490, 'cat'),
+			new Enemy(this, 650, 490, 'cat'),
+			new Enemy2(this, 650, 490, 'rat'),
+			new Enemy2(this, 650, 490, 'rat'),
 		];
 		this.enemyIndex = 0;
 		for (var i = this.enemies.length - 1; i >= 0; i--) {
@@ -173,14 +174,15 @@ export default class LevelScene extends Phaser.Scene {
 		this.currentMusic = music;
 		this.currentMusic.play();
 		this.lastBarTime = this.currentMusic.getBarTime();
-		this.cat_cue.setRate(this.currentMusic.bpm / 143);
-		this.rat_cue.setRate(this.currentMusic.bpm / 143);
+		let rate = this.currentMusic.rate * this.currentMusic.bpm / 143;
+		this.cat_cue.setRate(rate);
+		this.rat_cue.setRate(rate);
 	}
 
 
-	findAvailableEnemy() {
+	findAvailableEnemy(type) {
 		for (var i = 0; i < this.enemies.length; i++) {
-			if (this.enemies[i].isHiding) {
+			if (this.enemies[i].isHiding && this.enemies[i].type == type) {
 				return this.enemies[i];
 			}
 		}
@@ -206,7 +208,7 @@ export default class LevelScene extends Phaser.Scene {
 		let catCheckTime = (time + 2) % this.eventMaxRange;
 
 		if (this.events[catCheckTime]) {
-			let enemy = this.findAvailableEnemy();
+			let enemy = this.findAvailableEnemy(this.events[catCheckTime]);
 			this.invert = !this.invert; // Temporary
 			enemy.appear(time, this.invert);
 		}
@@ -415,6 +417,26 @@ export default class LevelScene extends Phaser.Scene {
 				this.playMusic(this.practiceMusic);
 			}
 			else if (this.progress == "practice_cat") {
+				this.progress = "middle_text";
+				this.dialogueList = [
+					"Nice job!",
+					"The next target will be tricker. Try to keep up.",
+				];
+				this.onProgress();
+			}
+			else if (this.progress == "middle_text") {
+				this.progress = "practice_rat";
+
+				this.events = {
+					6: 'rat',
+					14: 'rat',
+				};
+				this.eventMaxRange = 16;
+				this.practiceCount = 3;
+
+				this.playMusic(this.practiceMusic);
+			}
+			else if (this.progress == "practice_rat") {
 				this.progress = "end_text";
 				this.dialogueList = [
 					"Wow. You're really good!",
@@ -425,7 +447,15 @@ export default class LevelScene extends Phaser.Scene {
 			else if (this.progress == "end_text") {
 				this.progress = "level";
 				this.events = {
-					6: 'cat', 10: 'cat', 14: 'cat', 19: 'cat', 22: 'cat', 26: 'cat', 30: 'cat', 31: 'cat', 34: 'cat', 38: 'cat', 42: 'cat', 46: 'cat', 47: 'cat', 51: 'cat', 54: 'cat', 58: 'cat', 62: 'cat', 63: 'cat', 66: 'cat', 70: 'cat', 74: 'cat', 78: 'cat', 79: 'cat', 82: 'rat', 87: 'cat', 90: 'cat', 91: 'cat', 95: 'cat', 98: 'cat', 99: 'cat', 103: 'cat', 106: 'cat', 107: 'cat', 111: 'cat', 116: 'cat', 119: 'cat', 122: 'cat', 123: 'cat', 127: 'cat', 130: 'cat', 131: 'cat', 135: 'cat', 138: 'cat', 139: 'cat', 143: 'cat', 148: 'cat', 151: 'cat', 152: 'cat', 155: 'cat', 156: 'cat', 160: 'rat'
+					6: 'cat', 10: 'cat', 14: 'cat', 18: 'rat',
+					22: 'cat', 26: 'cat', 31: 'cat', 35: 'rat',
+					38: 'cat', 42: 'cat', 46: 'cat', 47: 'cat', 51: 'cat',
+					54: 'rat', 58: 'rat', 62: 'cat', 63: 'cat', 66: 'rat',
+					70: 'cat', 74: 'cat', 78: 'rat', 80.5: 'rat',
+					86: 'cat', 91: 'rat', 94: 'cat', 98: 'cat', 99: 'cat',
+					102.5: 'rat', 106: 'cat', 110.5: 'rat', 114: 'cat',
+					119: 'rat', 122: 'cat', 123: 'cat', 127.5: 'rat', 130: 'cat', 131: 'cat',
+					135: 'cat', 138: 'cat', 139: 'cat', 143: 'rat', 145.5: 'rat', 148: 'rat', 151: 'cat', 152: 'cat', 155: 'cat', 156: 'cat', 160: 'cat'
 				};
 				this.eventMaxRange = 9999;
 
