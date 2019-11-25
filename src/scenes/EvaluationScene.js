@@ -64,12 +64,11 @@ export default class EvaluationScene extends Phaser.Scene {
 		delay += 2100;
 		this.addEvent(delay, function() {
 			this.text3.setAlpha(1);
-			this.RatingOK.play();
+			this.music.play();
 		});
 
 		delay += 1100;
 		this.addEvent(delay, function() {
-			this.music.play();
 		});
 
 		delay += 200;

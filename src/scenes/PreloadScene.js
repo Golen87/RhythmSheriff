@@ -40,8 +40,8 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('bgm_practice', 'assets/music/BGM_PRACTICE.ogg');
 		//this.load.audio('puppywestern_2_loop', 'assets/music/puppywestern_2_loop.mp3');
 		//this.load.audio('puppywestern_2_loop_nocues', 'assets/music/puppywestern_2_loop_nocues.mp3');
-		this.load.audio('puppywestern_2', 'assets/music/puppywestern_2.mp3');
-		//this.load.audio('puppywestern_2_nocues', 'assets/music/puppywestern_2_nocues.mp3');
+		//this.load.audio('puppywestern_2', 'assets/music/puppywestern_2.mp3');
+		this.load.audio('puppywestern_2_nocues', 'assets/music/puppywestern_2_nocues.mp3');
 		//this.load.audio('glow', 'assets/music/Glow.mp3');
 
 		this.load.audio('cowbell', 'assets/audio/cowbell.wav');
@@ -49,7 +49,6 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('shoot_1', 'assets/audio/shoot_1.wav');
 		this.load.audio('shoot_2', 'assets/audio/shoot_2.wav');
 		this.load.audio('shoot_3', 'assets/audio/shoot_3.wav');
-		this.load.audio('shoot_4', 'assets/audio/shoot_4.wav');
 		this.load.audio('karate_kick_miss', 'assets/audio/karate_kick_miss.wav');
 		this.load.audio('karate_kick_swing', 'assets/audio/karate_kick_swing.wav');
 		this.load.audio('target_destroyed_1', 'assets/audio/target_destroyed_1.wav');
@@ -94,6 +93,9 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('TapUp', 'assets/audio/Mato/TapUp.wav');
 		this.load.audio('Woodblock2', 'assets/audio/Mato/Woodblock2.wav');
 		this.load.audio('Woodblock', 'assets/audio/Mato/Woodblock.wav');
+
+		this.load.audio('cat_cue', 'assets/audio/Jwatch/catcue.wav');
+		this.load.audio('rat_cue', 'assets/audio/Jwatch/ratcue.wav');
 
 		//this.load.audio('boy_one', 'assets/audio/boy_one.wav');
 		//this.load.audio('boy_two', 'assets/audio/boy_two.wav');

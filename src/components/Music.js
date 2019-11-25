@@ -6,6 +6,9 @@ export default class Music extends Phaser.Sound.WebAudioSound {
 		scene.sound.sounds.push(this);
 		this.key = key;
 
+		if (!MusicData[key]) {
+			throw "Music data missing for: " + key;
+		}
 		let custom = MusicData[key] || {};
 
 		this.offset = custom.offset;
@@ -39,12 +42,16 @@ export default class Music extends Phaser.Sound.WebAudioSound {
 				}
 			}
 
-			let bar = this.getBar();
-			if (bar >= 0 && bar != this._prevBar) {
-				//console.log('emit', bar, this.key);
-				this.emit('beat', bar);
+			let barTime = this.getBarTime();
+			if (barTime >= 0) {
+				if (Math.floor(barTime) != Math.floor(this._prevBarTime)) {
+					this.emit('bar', Math.floor(barTime));
+				}
+				if (Math.floor(4*barTime) != Math.floor(4*this._prevBarTime)) {
+					this.emit('beat', Math.floor(4*barTime)/4);
+				}
 			}
-			this._prevBar = bar;
+			this._prevBarTime = barTime;
 		}
 	}
 

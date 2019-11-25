@@ -7,25 +7,25 @@ export default {
 		end: 15.49,
 	},
 	'bgm_epilogue_bad': {
-		offset: 0.9,
-		bpm: 133.5,
+		offset: 1.995,
+		bpm: 135,
 		loop: true,
-		start: 0.31,
-		end: 21.88,
+		start: 3.329,
+		end: 24.667,
 	},
 	'bgm_epilogue_good': {
-		offset: 0.491,
+		offset: 1.195,
 		bpm: 123.3,
 		loop: true,
-		start: 0.491,
-		end: 31.641,
+		start: 2.964,
+		end: 34.114,
 	},
 	'bgm_epilogue_great': {
-		offset: 0,
-		bpm: 149,
+		offset: 2.533,
+		bpm: 152,
 		loop: true,
-		start: 1.523,
-		end: 27.263,
+		start: 2.533,
+		end: 27.804,
 	},
 	'bgm_game_over': {
 		offset: 0.160,
@@ -56,6 +56,10 @@ export default {
 	},
 
 	'puppywestern_2': {
+		offset: 0.029,
+		bpm: 143,
+	},
+	'puppywestern_2_nocues': {
 		offset: 0.029,
 		bpm: 143,
 	},
