@@ -7,6 +7,10 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.size = 0.6;
 		this.holsterTime = -1;
 
+		this.shadow = scene.add.image(x-10, y-20, 'shadow');
+		this.shadow.setAlpha(0.4);
+		this.add(this.shadow);
+
 		this.sprite = scene.add.sprite(x, y, 'dog', 0);
 		this.sprite.setOrigin(0.5, 1.0);
 		this.sprite.setScale(this.size);
