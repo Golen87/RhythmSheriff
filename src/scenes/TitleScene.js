@@ -62,9 +62,7 @@ export default class TitleScene extends Phaser.Scene {
 		if (!this.music) {
 			this.music = new Music(this, 'jingle_anime', { volume: 0.5 });
 
-			this.music.on('beat', this.onBeat, this);
-
-			this.music.once('complete', function(music) {
+			this.music.on('complete', function(music) {
 				this.cameras.main.fadeEffect.start(true, 100, 0x11, 0x11, 0x11);
 				this.time.addEvent({
 					delay: 1000,
@@ -145,10 +143,6 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	update(time, delta) {
-	}
-
-
-	onBeat(bar) {
 	}
 
 

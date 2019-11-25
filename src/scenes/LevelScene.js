@@ -122,67 +122,7 @@ export default class LevelScene extends Phaser.Scene {
 		this.tumble.setScale(0.7);
 
 		// Player
-		this.player = this.add.sprite(280, 570, 'dog', 0);
-		this.player.setOrigin(0.5, 1.0);
-		this.player.size = 0.6;
-		this.player.setScale(this.player.size);
-		this.player.setTint(0x7777ff);
-
-
-		/* Player animations */
-
-		this.anims.create({
-			key: 'small_equip',
-			frames: [
-				{key: 'dog', frame: 1, duration: 50},
-				{key: 'dog', frame: 6, duration: 0},
-			]
-		});
-		this.anims.create({
-			key: 'big_equip',
-			frames: [
-				{key: 'dog', frame: 1, duration: 50},
-				{key: 'dog', frame: 2, duration: 0},
-			]
-		});
-		this.anims.create({
-			key: 'unequip',
-			frames: [
-				{key: 'dog', frame: 1, duration: 50},
-				{key: 'dog', frame: 0, duration: 0},
-			]
-		});
-		this.anims.create({
-			key: 'big_shoot',
-			frames: [
-				{key: 'dog', frame: 3, duration: 50},
-				{key: 'dog', frame: 4, duration: 150},
-				{key: 'dog', frame: 5, duration: 0},
-			]
-		});
-		this.anims.create({
-			key: 'big_shoot_miss',
-			frames: [
-				{key: 'dog', frame: 3, duration: 50},
-				{key: 'dog', frame: 13, duration: 150},
-				{key: 'dog', frame: 14, duration: 0},
-			]
-		});
-		this.anims.create({
-			key: 'small_shoot',
-			frames: [
-				{key: 'dog', frame: 7, duration: 50},
-				{key: 'dog', frame: 8, duration: 150},
-				{key: 'dog', frame: 9, duration: 0},
-			]
-		});
-		this.anims.create({
-			key: 'small_shoot_miss',
-			frames: [
-				{key: 'dog', frame: 11, duration: 50},
-				{key: 'dog', frame: 12, duration: 0},
-			]
-		});
+		this.player = new Player(this, 280, 570);
 
 
 		/* Input */

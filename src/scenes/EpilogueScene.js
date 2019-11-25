@@ -50,12 +50,12 @@ export default class EpilogueScene extends Phaser.Scene {
 			let keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 			keySpace.on('down', this.onTapDown, this);
 			keySpace.on('up', this.onTapUp, this);
-			this.input.on('pointerdown', this.onTapDown, this);
-			this.input.on('pointerup', this.onTapUp, this);
 
 			this.TapDown = this.sound.add('TapDown', { volume: 0.5 });
 			this.TapUp = this.sound.add('TapUp', { volume: 0.5 });
 		}
+		this.input.on('pointerdown', this.onTapDown, this);
+		this.input.on('pointerup', this.onTapUp, this);
 	}
 
 	enableTap() {
