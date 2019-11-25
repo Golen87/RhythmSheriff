@@ -17,13 +17,13 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('title', 'assets/images/title.png');
 
 		this.load.image('tumble', 'assets/images/tumble.png');
-		this.load.image('rat', 'assets/images/rat/rat01.png');
 		this.load.image('wood_front', 'assets/images/wood/wood_front.png');
 		this.load.image('wood_back', 'assets/images/wood/wood_back.png');
 		this.load.image('wood_block', 'assets/images/wood/wood_block.png');
 
 		this.load.spritesheet('dog', 'assets/images/dog/dog.png', { frameWidth: 700, frameHeight: 1000 });
 		this.load.spritesheet('cat', 'assets/images/cat/cat.png', { frameWidth: 400, frameHeight: 548 });
+		this.load.spritesheet('rat', 'assets/images/rat/rat.png', { frameWidth: 400, frameHeight: 600 });
 		this.load.spritesheet('bullet_hole', 'assets/images/bullet_hole/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
 
 

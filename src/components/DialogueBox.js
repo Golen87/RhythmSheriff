@@ -9,7 +9,9 @@ export default class DialogueBox extends Phaser.GameObjects.Container {
 		const BLACK = 0x000000;
 		const WHITE = 0xffffff;
 
-		this.arrowOuter = scene.add.triangle(0,100, 0,0, 30,60, 60,0);
+		const ARROW_X = -40;
+
+		this.arrowOuter = scene.add.triangle(ARROW_X,100, 0,0, 30,60, 60,0);
 		this.arrowOuter.setOrigin(0.5, 0.0);
 		this.arrowOuter.setStrokeStyle(5, BLACK, 1.0);
 		this.add(this.arrowOuter);
@@ -21,7 +23,7 @@ export default class DialogueBox extends Phaser.GameObjects.Container {
 
 		const wo = 4;
 		const ho = 8;
-		this.arrowInner = scene.add.triangle(0-wo,100+ho/4+1, 0+wo,0, 30,60-ho, 60-wo,0, WHITE);
+		this.arrowInner = scene.add.triangle(ARROW_X-wo,100+ho/4+1, 0+wo,0, 30,60-ho, 60-wo,0, WHITE);
 		this.arrowInner.setOrigin(0.5, 0.0);
 		this.add(this.arrowInner);
 
