@@ -44,6 +44,8 @@ export default class PreloadScene extends Phaser.Scene {
 		//this.load.audio('puppywestern_2', 'assets/music/puppywestern_2.mp3');
 		this.load.audio('puppywestern_2_nocues', 'assets/music/puppywestern_2_nocues.mp3');
 		//this.load.audio('glow', 'assets/music/Glow.mp3');
+		//this.load.audio('samurai_slice', 'assets/music/Samurai Slice - Rhythm Heaven Fever.ogg');
+
 
 		this.load.audio('cowbell', 'assets/audio/cowbell.wav');
 		this.load.audio('miss', 'assets/audio/miss.wav');
