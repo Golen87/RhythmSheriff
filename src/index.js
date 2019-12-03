@@ -7,6 +7,7 @@ import EpilogueScene from "./scenes/EpilogueScene.js"
 
 const config = {
 	type: Phaser.AUTO,
+	title: "Rhythm Sheriff",
 	parent: "RhythmSheriff",
 	width: 1000,
 	height: 600,
