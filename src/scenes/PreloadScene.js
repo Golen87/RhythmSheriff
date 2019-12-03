@@ -27,6 +27,19 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.spritesheet('rat', 'assets/images/rat/rat.png', { frameWidth: 400, frameHeight: 600 });
 		this.load.spritesheet('bullet_hole', 'assets/images/bullet_hole/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
 
+		this.load.spritesheet('try_again', 'assets/images/ratings/try_again.png', { frameWidth: 240, frameHeight: 96 });
+		this.load.image('try_again_spiral', 'assets/images/ratings/spiral.png');
+		this.load.image('ok', 'assets/images/ratings/ok.png');
+		this.load.image('ok_puff', 'assets/images/ratings/puff.png');
+		this.load.image('superb', 'assets/images/ratings/superb.png');
+		this.load.image('superb_glow', 'assets/images/ratings/superb_glow.png');
+		this.load.image('superb_star_color', 'assets/images/ratings/star_color.png');
+		this.load.image('superb_star_glow', 'assets/images/ratings/star_glow.png');
+		this.load.image('superb_star_inside', 'assets/images/ratings/star_inside.png');
+		this.load.image('superb_star_outline', 'assets/images/ratings/star_outline.png');
+		this.load.image('superb_red_star', 'assets/images/ratings/red_star.png');
+		this.load.image('superb_white_star', 'assets/images/ratings/white_star.png');
+
 
 		/* Audio */
 		this.load.audio('bgm_epilogue_bad', 'assets/music/BGM_EPILOGUE_BAD.ogg');

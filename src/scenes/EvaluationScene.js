@@ -1,4 +1,7 @@
 import Music from "./../components/Music.js";
+import RatingBad from "./../components/RatingBad.js";
+import RatingGood from "./../components/RatingGood.js";
+import RatingGreat from "./../components/RatingGreat.js";
 
 export default class EvaluationScene extends Phaser.Scene {
 	constructor() {
@@ -30,22 +33,31 @@ export default class EvaluationScene extends Phaser.Scene {
 		this.music = new Music(this, song, { volume: 0.5 });
 
 
-		this.textBox = this.add.rexRoundRectangle(200, 120, 500, 80, 40, 0xffffff);
+		this.textBox = this.add.rexRoundRectangle(190, 100, 500, 80, 40, 0xffffff);
 		this.textBox.setOrigin(0, 0.5);
 		this.textBox.setAlpha(0);
 
-		this.text1 = this.add.text(200+250, 120, "Sheriff's notes:", { font: "bold 40px Wii", color: "black" });
+		this.text1 = this.add.text(190+250, 100, "Sheriff's notes:", { font: "bold 40px Wii", color: "black" });
 		this.text1.setOrigin(0.5, 0.5);
 		this.text1.setAlpha(0);
-		this.text2 = this.add.text(200+40, 280, "You did " + result.rating + ".", { font: "bold 35px Wii" });
+		this.text2 = this.add.text(190+40, 260, "You did " + result.rating + ".", { font: "bold 35px Wii" });
 		this.text2.setOrigin(0.0, 0.5);
 		this.text2.setAlpha(0);
-		this.text3 = this.add.text(this.W - 100, 500, "<" + result.rating + " icon>", { font: "bold 40px Wii" });
-		this.text3.setOrigin(1.0, 0.5);
-		this.text3.setAlpha(0);
-		this.tapText = this.add.text(this.CX, this.H-20, '[tap]', { font: "25px Wii" });
+		this.tapText = this.add.text(this.CX, this.H-50, '[tap]', { font: "25px Wii" });
 		this.tapText.setOrigin(0.5, 1.0);
 		this.tapText.setAlpha(0);
+
+
+		if (result.rating == 'bad') {
+			this.icon = new RatingBad(this, this.W-220, 500);
+		}
+		else if (result.rating == 'good') {
+			this.icon = new RatingGood(this, this.W-220, 500);
+		}
+		else {
+			this.icon = new RatingGreat(this, this.W-240, 500);
+		}
+		this.icon.setAlpha(0);
 
 
 		let delay = 1000;
@@ -63,15 +75,11 @@ export default class EvaluationScene extends Phaser.Scene {
 
 		delay += 2100;
 		this.addEvent(delay, function() {
-			this.text3.setAlpha(1);
+			this.icon.show(this.time.now);
 			this.music.play();
 		});
 
-		delay += 1100;
-		this.addEvent(delay, function() {
-		});
-
-		delay += 200;
+		delay += 1300;
 		this.setupInput();
 		this.addEvent(delay, this.enableTap);
 	}
@@ -142,6 +150,10 @@ export default class EvaluationScene extends Phaser.Scene {
 				callbackScope: this
 			});
 		}
+	}
+
+	update(time, delta) {
+		this.icon.update(time, delta);
 	}
 
 
