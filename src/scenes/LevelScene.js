@@ -316,15 +316,15 @@ export default class LevelScene extends Phaser.Scene {
 
 	getRating(accuracy) {
 		if (accuracy > 0) {
-			if (accuracy < 0.04)	return 'perfect';
-			if (accuracy < 0.12)	return 'good';
+			if (accuracy < 0.05)	return 'perfect';
+			if (accuracy < 0.13)	return 'good';
 			if (accuracy < 0.26)	return 'ok';
 			//if (accuracy < 0.48)	return 'bad';
 		}
 		else {
-			if (accuracy > -0.04)	return 'perfect';
-			if (accuracy > -0.12)	return 'good';
-			if (accuracy > -0.25)	return 'ok';
+			if (accuracy > -0.05)	return 'perfect';
+			if (accuracy > -0.13)	return 'good';
+			if (accuracy > -0.26)	return 'ok';
 			//if (accuracy > -0.98)	return 'bad';
 		}
 		return 'bad';
@@ -490,6 +490,8 @@ export default class LevelScene extends Phaser.Scene {
 		console.log(total);
 
 		let rating = 'bad';
+
+		count['miss'] -= 1; // Remove later
 
 		if (count['ok'] == 0 && count['bad'] == 0 && count['miss'] == 0) {
 			rating = 'perfect';
