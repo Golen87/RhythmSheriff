@@ -186,7 +186,7 @@ export default class PreloadScene extends Phaser.Scene {
 
 		/* Plug-ins */
 
-        this.load.plugin('rexroundrectangleplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexroundrectangleplugin.min.js', true);    
+        //this.load.plugin('rexroundrectangleplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexroundrectangleplugin.min.js', true);    
 	}
 
 	onLoadProgress(progress) {
