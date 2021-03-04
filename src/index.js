@@ -4,6 +4,7 @@ import TitleScene from "./scenes/TitleScene.js"
 import LevelScene from "./scenes/LevelScene.js"
 import EvaluationScene from "./scenes/EvaluationScene.js"
 import EpilogueScene from "./scenes/EpilogueScene.js"
+import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js';
 
 const config = {
 	type: Phaser.AUTO,
@@ -33,7 +34,16 @@ const config = {
 		LevelScene,
 		EvaluationScene,
 		EpilogueScene,
-	]
+	],
+	plugins: {
+		global: [
+			{
+				key: 'rexRoundRectanglePlugin',
+				plugin: RoundRectanglePlugin,
+				start: true
+			}
+		]
+	}
 };
 
 const game = new Phaser.Game(config);
