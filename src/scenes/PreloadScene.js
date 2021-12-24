@@ -14,6 +14,7 @@ export default class PreloadScene extends Phaser.Scene {
 
 		/* Images */
 		this.load.image('background', 'assets/images/background.png');
+		this.load.image('foreground', 'assets/images/foreground.png');
 		this.load.image('title', 'assets/images/title.png');
 
 		this.load.image('tumble', 'assets/images/tumble.png');
@@ -22,7 +23,7 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('wood_back', 'assets/images/wood/wood_back.png');
 		this.load.image('wood_block', 'assets/images/wood/wood_block.png');
 
-		this.load.spritesheet('dog', 'assets/images/dog/dog.png', { frameWidth: 700, frameHeight: 1000 });
+		this.load.spritesheet('dog', 'assets/images/dog/dog2.png', { frameWidth: 700, frameHeight: 1000 });
 		this.load.spritesheet('cat', 'assets/images/cat/cat.png', { frameWidth: 400, frameHeight: 548 });
 		this.load.spritesheet('rat', 'assets/images/rat/rat.png', { frameWidth: 400, frameHeight: 600 });
 		this.load.spritesheet('bullet_hole', 'assets/images/bullet_hole/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
@@ -58,6 +59,7 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('puppywestern_2_nocues', 'assets/music/puppywestern_2_nocues.mp3');
 		//this.load.audio('glow', 'assets/music/Glow.mp3');
 		//this.load.audio('samurai_slice', 'assets/music/Samurai Slice - Rhythm Heaven Fever.ogg');
+		this.load.audio('tapatio', 'assets/music/Shady Monk & That Andy Guy - Tapatio.ogg');
 
 
 		this.load.audio('cowbell', 'assets/audio/cowbell.wav');
@@ -110,8 +112,8 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('Woodblock2', 'assets/audio/Mato/Woodblock2.wav');
 		this.load.audio('Woodblock', 'assets/audio/Mato/Woodblock.wav');
 
-		this.load.audio('cat_cue', 'assets/audio/Jwatch/catcue.wav');
-		this.load.audio('rat_cue', 'assets/audio/Jwatch/ratcue.wav');
+		this.load.audio('cat_cue', 'assets/audio/Jwatch/catcue2.wav');
+		this.load.audio('rat_cue', 'assets/audio/Jwatch/ratcue2.wav');
 
 		//this.load.audio('boy_one', 'assets/audio/boy_one.wav');
 		//this.load.audio('boy_two', 'assets/audio/boy_two.wav');
