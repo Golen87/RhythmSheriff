@@ -24,8 +24,9 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('wood_block', 'assets/images/wood/wood_block.png');
 
 		this.load.spritesheet('dog', 'assets/images/dog/dog2.png', { frameWidth: 700, frameHeight: 1000 });
-		this.load.spritesheet('cat', 'assets/images/cat/cat.png', { frameWidth: 400, frameHeight: 548 });
+		this.load.spritesheet('cat', 'assets/images/cat/cat2.png', { frameWidth: 300, frameHeight: 550 });
 		this.load.spritesheet('rat', 'assets/images/rat/rat.png', { frameWidth: 400, frameHeight: 600 });
+		this.load.spritesheet('plank', 'assets/images/plank.png', { frameWidth: 300, frameHeight: 550 });
 		this.load.spritesheet('bullet_hole', 'assets/images/bullet_hole/bullet_hole.png', { frameWidth: 80, frameHeight: 80 });
 
 		this.load.spritesheet('try_again', 'assets/images/ratings/try_again.png', { frameWidth: 240, frameHeight: 96 });
