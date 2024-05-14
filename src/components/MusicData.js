@@ -67,4 +67,8 @@ export default {
 		offset: 0.156,
 		bpm: 155,
 	},
+	'tapatio': {
+		offset: 0.052,
+		bpm: 105,
+	},
 };

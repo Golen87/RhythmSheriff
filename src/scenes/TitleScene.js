@@ -15,6 +15,10 @@ export default class TitleScene extends Phaser.Scene {
 		let bg = this.add.image(this.CX, this.CY, 'title');
 		this.fitToScreen(bg);
 
+		this.hintText = this.add.text(this.CX, 220, "Tap anywhere to start", { font: "bold 40px Wii", color: "white" });
+		this.hintText.setOrigin(0.5, 1.1);
+		this.hintText.alpha = 0;
+
 		this.circle = this.add.circle(this.CX, 223, 200, 0xffffff, 0.15);
 
 		this.titleRhythmBg = this.add.text(this.CX, 220, " Rhythm ", { font: "130px 'Texas Tango'", color: "white", stroke: "#ffffffdd", strokeThickness: 6 });
@@ -62,6 +66,8 @@ export default class TitleScene extends Phaser.Scene {
 		if (!this.music) {
 			this.music = new Music(this, 'jingle_anime', { volume: 0.5 });
 
+			this.music.on('beat', this.onBeat, this);
+
 			this.music.on('complete', function(music) {
 				this.cameras.main.fadeEffect.start(true, 100, 0x11, 0x11, 0x11);
 				this.time.addEvent({
@@ -79,22 +85,22 @@ export default class TitleScene extends Phaser.Scene {
 
 		/* Debugging */
 
-		this.input.keyboard.once('keydown-ONE', function() {
-			this.music.stop();
-			this.scene.start("EvaluationScene", {rating: 'bad'});
-		}, this);
-		this.input.keyboard.once('keydown-TWO', function() {
-			this.music.stop();
-			this.scene.start("EvaluationScene", {rating: 'good'});
-		}, this);
-		this.input.keyboard.once('keydown-THREE', function() {
-			this.music.stop();
-			this.scene.start("EvaluationScene", {rating: 'great'});
-		}, this);
-		this.input.keyboard.once('keydown-FOUR', function() {
-			this.music.stop();
-			this.scene.start("EvaluationScene", {rating: 'perfect'});
-		}, this);
+		// this.input.keyboard.once('keydown-ONE', function() {
+		// 	this.music.stop();
+		// 	this.scene.start("EvaluationScene", {rating: 'bad'});
+		// }, this);
+		// this.input.keyboard.once('keydown-TWO', function() {
+		// 	this.music.stop();
+		// 	this.scene.start("EvaluationScene", {rating: 'good'});
+		// }, this);
+		// this.input.keyboard.once('keydown-THREE', function() {
+		// 	this.music.stop();
+		// 	this.scene.start("EvaluationScene", {rating: 'great'});
+		// }, this);
+		// this.input.keyboard.once('keydown-FOUR', function() {
+		// 	this.music.stop();
+		// 	this.scene.start("EvaluationScene", {rating: 'perfect'});
+		// }, this);
 
 
 		/* Animations */
@@ -103,46 +109,62 @@ export default class TitleScene extends Phaser.Scene {
 		this.titleRhythmBg.x -= 50;
 		this.titleRhythm.setAlpha(0);
 		this.titleRhythmBg.setAlpha(0);
-		this.tweens.add({
-			targets: [this.titleRhythm, this.titleRhythmBg],
-			alpha: 1,
-			x: '+=50',
-			ease: 'Cubic',
-			delay: 1 * this.music.speed * 1000,
-			duration: 2 * this.music.speed * 1000
-		});
 		this.titleSheriff.x += 50;
 		this.titleSheriffBg.x += 50;
 		this.titleSheriff.setAlpha(0);
 		this.titleSheriffBg.setAlpha(0);
-		this.tweens.add({
-			targets: [this.titleSheriff, this.titleSheriffBg],
-			alpha: 1,
-			x: '-=50',
-			ease: 'Cubic',
-			delay: 2 * this.music.speed * 1000,
-			duration: 2 * this.music.speed * 1000
-		});
 		this.circle.setAlpha(0);
-		this.tweens.add({
-			targets: this.circle,
-			alpha: 1,
-			ease: 'Cubic',
-			delay: 3 * this.music.speed * 1000,
-			duration: 4 * this.music.speed * 1000
-		});
 
-		this.tweens.add({
-			targets: [this.titleRhythm, this.titleSheriff],
-			alpha: 0.5,
-			ease: 'Sine',
-			yoyo: true,
-			delay: 5 * this.music.speed * 1000,
-			duration: 0.5 * this.music.speed * 1000
-		});
+		this.animationPlaying = false;
 	}
 
 	update(time, delta) {
+		this.hintText.alpha += 0.01;
+		if (this.music.getCurrentTime() > 0) {
+			this.hintText.setVisible(false);
+		}
+	}
+
+	onBeat(time) {
+		if (time == 1.0) {
+			this.tweens.add({
+				targets: [this.titleRhythm, this.titleRhythmBg],
+				alpha: 1,
+				x: '+=50',
+				ease: 'Cubic',
+				// delay: 1 * this.music.speed * 1000,
+				duration: 2 * this.music.speed * 1000
+			});
+		}
+		if (time == 2.0) {
+			this.tweens.add({
+				targets: [this.titleSheriff, this.titleSheriffBg],
+				alpha: 1,
+				x: '-=50',
+				ease: 'Cubic',
+				// delay: 2 * this.music.speed * 1000,
+				duration: 2 * this.music.speed * 1000
+			});
+		}
+		if (time == 3.0) {
+			this.tweens.add({
+				targets: this.circle,
+				alpha: 1,
+				ease: 'Cubic',
+				// delay: 3 * this.music.speed * 1000,
+				duration: 4 * this.music.speed * 1000
+			});
+		}
+		if (time == 5.0) {
+			this.tweens.add({
+				targets: [this.titleRhythm, this.titleSheriff],
+				alpha: 0.5,
+				ease: 'Sine',
+				yoyo: true,
+				// delay: 5 * this.music.speed * 1000,
+				duration: 0.5 * this.music.speed * 1000
+			});
+		}
 	}
 
 

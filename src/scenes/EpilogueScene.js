@@ -19,6 +19,12 @@ export default class EpilogueScene extends Phaser.Scene {
 			'great': 'jingle_epilogue_great',
 			'perfect': 'jingle_epilogue_great',
 		}[result.rating];
+		let text = {
+			'bad': 'Better luck next time.',
+			'good': 'Keep practicing.',
+			'great': 'Amazing work.',
+			'perfect': 'Perfection.',
+		}[result.rating];
 
 		if (this.music) {
 			this.music.destroy();
@@ -29,7 +35,7 @@ export default class EpilogueScene extends Phaser.Scene {
 
 		this.text1 = this.add.text(this.CX, this.CY-100, "<Image>", { font: "bold 40px Wii" });
 		this.text1.setOrigin(0.5);
-		this.text2 = this.add.text(this.CX, this.CY+100, result.rating + " description", { font: "bold 40px Wii" });
+		this.text2 = this.add.text(this.CX, this.CY+100, text, { font: "bold 40px Wii" });
 		this.text2.setOrigin(0.5);
 		this.tapText = this.add.text(this.CX, this.H-20, '[tap]', { font: "25px Wii" });
 		this.tapText.setOrigin(0.5, 1);

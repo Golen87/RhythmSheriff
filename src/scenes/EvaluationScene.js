@@ -26,6 +26,12 @@ export default class EvaluationScene extends Phaser.Scene {
 			'great': 'bgm_epilogue_great',
 			'perfect': 'bgm_perfect_fan', // Skips epilogue
 		}[result.rating];
+		let text = {
+			'bad': "Fast is fine, but accuracy\nis everything.",
+			'good': "Well, I think of you as a\nstraight shooter...\nmost of the time.",
+			'great': "There's a new sheriff in town.",
+			'perfect': "There's a new sheriff in town.\nY'all be cool. Right on.",
+		}[result.rating];
 
 		if (this.music) {
 			this.music.destroy();
@@ -40,7 +46,7 @@ export default class EvaluationScene extends Phaser.Scene {
 		this.text1 = this.add.text(190+250, 100, "Sheriff's notes:", { font: "bold 40px Wii", color: "black" });
 		this.text1.setOrigin(0.5, 0.5);
 		this.text1.setAlpha(0);
-		this.text2 = this.add.text(190+40, 260, "You did " + result.rating + ".", { font: "bold 35px Wii" });
+		this.text2 = this.add.text(190+40, 260, text, { font: "bold 35px Wii" });
 		this.text2.setOrigin(0.0, 0.5);
 		this.text2.setAlpha(0);
 		this.tapText = this.add.text(this.CX, this.H-50, '[tap]', { font: "25px Wii" });

@@ -1,9 +1,9 @@
 import Phaser from "phaser";
-import PreloadScene from "./scenes/PreloadScene.js"
-import TitleScene from "./scenes/TitleScene.js"
-import LevelScene from "./scenes/LevelScene.js"
-import EvaluationScene from "./scenes/EvaluationScene.js"
-import EpilogueScene from "./scenes/EpilogueScene.js"
+import PreloadScene from "./scenes/PreloadScene.js";
+import TitleScene from "./scenes/TitleScene.js";
+import LevelScene from "./scenes/LevelScene.js";
+import EvaluationScene from "./scenes/EvaluationScene.js";
+import EpilogueScene from "./scenes/EpilogueScene.js";
 import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js';
 
 const config = {

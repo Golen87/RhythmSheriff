@@ -18,7 +18,7 @@ export default class Enemy2 extends Phaser.GameObjects.Container {
 
 		this.isHiding = true;
 		this.hideFac = 1;
-		this.hideDist = 215;
+		this.hideDist = 215+5;
 		this.hidingTime = -1;
 
 		this.isTurned = false;
@@ -27,12 +27,12 @@ export default class Enemy2 extends Phaser.GameObjects.Container {
 		this.turningTime = -1;
 		this.invert = false;
 
-		this.size = 0.4;
+		this.size = 0.41;
 		this.setScale(this.size);
 
 		this.sprite = scene.add.sprite(0, 0, 'cat', 0);
 		this.sprite.setOrigin(0.5, 1.0);
-		this.sprite.setTint(0xff7777);
+		// this.sprite.setTint(0xff9966);
 		this.add(this.sprite);
 
 		this.update(0);
@@ -58,7 +58,7 @@ export default class Enemy2 extends Phaser.GameObjects.Container {
 			let e1 = Phaser.Math.Easing.Cubic.Out(t1);
 			let e2 = Phaser.Math.Easing.Cubic.In(t2);
 			let e3 = Phaser.Math.Easing.Cubic.In(t3);
-			this.hideFac = 1 - 0.6 * e1 - 0.4 * e2 + 1.0 * e3;
+			this.hideFac = 1 - 0.8 * e1 - 0.2 * e2 + 1.0 * e3;
 			let t4 = this.getInterval(myTime, 0.25, 1.25);
 			//let t4 = this.getInterval(myTime, 0.20, 1.5);
 			let e4 = Phaser.Math.Easing.Sine.InOut(t4);
@@ -81,7 +81,8 @@ export default class Enemy2 extends Phaser.GameObjects.Container {
 
 		this.scaleX = this.size * Math.cos(turnValue * Math.PI);
 
-		this.sprite.setFrame(2*(this.scaleX < 0) + 1*this.isDestroyed);
+		// this.sprite.setFrame(2*(this.scaleX < 0) + 1*this.isDestroyed);
+		this.sprite.setFrame(1*(this.scaleX < 0) + 0*this.isDestroyed);
 	}
 
 	onBar(bar) {
@@ -127,7 +128,7 @@ export default class Enemy2 extends Phaser.GameObjects.Container {
 				hole.destroy();
 			}
 
-			//this.scene.robot_eject.play();
+			this.scene.robot_eject.play();
 			this.scene.rat_cue.play();
 		}
 	}
@@ -135,7 +136,7 @@ export default class Enemy2 extends Phaser.GameObjects.Container {
 	hide() {
 		this.hidingTime = -1;
 		this.isHiding = true;
-		this.emit('score', this.score);
+		this.emit('score', this.score, true);
 	}
 
 	getHitPoint(rating) {
