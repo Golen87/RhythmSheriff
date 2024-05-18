@@ -1,0 +1,13 @@
+{
+	"team": "Chocobois",
+	"title": "Rhythm Sheriff",
+	"description": "Target practice to the beat. Originally made during LiU Fall Game Jam 2019.",
+	"itch": {
+		"upload": false,
+		"username": "golen",
+		"game": "rhythm-sheriff"
+	},
+	"neutralino": {
+		"allow": ["app.exit", "window.center"]
+	}
+}

@@ -1,55 +1,92 @@
-# Phaser 3 Webpack Project Template
+# Rhythm Sheriff
 
-A Phaser 3 project template with ES6 support via [Babel 7](https://babeljs.io/) and [Webpack 4](https://webpack.js.org/)
-that includes hot-reloading for development and production-ready builds.
+A Game Jam project written in Javascript, using Phaser. The theme for this jam was Wild west and Musical.
 
-Loading images via JavaScript module `import` is also supported.
+Rhythm Sheriff is a rhythm game where you practice target shooting in sync with the music. The gameplay takes great inspiration from the Rhythm Heaven series.
 
-## Requirements
+Credits:
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+- Golen (programming)
+- Miau (graphics)
+- Shaymoo (backgrounds)
+- JWatch (music)
+- Matojeje (sound effects).
 
-## Available Commands
+## Quick start
 
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm start` | Build project and open web server running project |
-| `npm run build` | Builds code bundle with production settings (minification, uglification, etc..) |
+### Prerequisites
 
-## Writing Code
+- Git installed.
+- Node 18+ installed.
 
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development
-server by running `npm start`.
+### Steps
 
+1. Clone the repository
+2. `npm install`
+3. `npm run dev`
 
-After starting the development server with `npm start`, you can edit any files in the `src` folder
-and webpack will automatically recompile and reload your server (available at `http://localhost:8080`
-by default).
+Remember to update [`game.config.json`](game.config.json) accordingly.
 
-## Customizing Template
+## Building
 
-### Babel
-You can write modern ES6+ JavaScript and Babel will transpile it to a version of JavaScript that you
-want your project to support. The targeted browsers are set in the `.babelrc` file and the default currently
-targets all browsers with total usage over "0.25%" but excludes IE11 and Opera Mini.
+1. `npm run build`
+2. Build goes to `/dist` directory
 
-  ```
-  "browsers": [
-    ">0.25%",
-    "not ie 11",
-    "not op_mini all"
-  ]
-  ```
+## Debugging
 
-### Webpack
-If you want to customize your build, such as adding a new webpack loader or plugin (i.e. for loading CSS or fonts), you can
-modify the `webpack/base.js` file for cross-project changes, or you can modify and/or create
-new configuration files and target them in specific npm tasks inside of `package.json'.
+This assumes you have VS Code and Chrome installed
 
-## Deploying Code
-After you run the `npm run build` command, your code will be built into a single bundle located at 
-`dist/bundle.min.js` along with any other assets you project depended. 
+- Hit F5 to debug
+  - This will launch Vite and Chrome
+  - You can now add breakpoints in VS Code
+- Hit Shift+F5 twice to stop debugging
 
-If you put the contents of the `dist` folder in a publicly-accessible location (say something like `http://mycoolserver.com`), 
-you should be able to open `http://mycoolserver.com/index.html` and play your game.
+## Deploying
+
+### GitHub
+
+The repository is configured to automatically deploy to Github Pages, you just have to change a setting on the repository to deploy from a branch and set the deploy branch to `gh-pages`.
+
+It will also create new downloads under releases.
+
+### Itch
+
+You can configure this repository to automatically deploy and upload releases to Itch. What you have to do is set the `BUTLER_CREDENTIALS` repository secret and set your Itch username and game name in [`game.config.json`](game.config.json).
+
+## System requirements
+
+### Web
+
+A modern up-to-date web browser
+
+### Windows
+
+- Microsoft Edge 89 or newer
+- [WebView2](https://go.microsoft.com/fwlink/p/?LinkId=2124703) installed (Windows 11 has this preinstalled)
+
+### MacOS
+
+- Safari 15 or newer
+
+### Linux
+
+- WebKitGTK installed
+
+## Notes
+
+### Mac
+
+The app is unsigned when built, so you need to follow these steps when distributing:
+
+1. First you need to extract the .app from the .dmg before attempting to run the game.
+2. Second, try running the game, a popup will say the app is unverified.
+3. Right click/Open the context menu on the .app, hold option, click open.
+4. Click open in the popup.
+
+The game will start normally from now on.
+
+### Linux
+
+You may have to mark the games as executable before it will let you run them.
+
+There have been reports of the game freezing, so the web version might be preferred in that case.
