@@ -28,7 +28,7 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.add(this.sprite);
 
 		this.unequipSound = new Sound(scene, "karate_kick_swing", {
-			volume: 0.45,
+			volume: 0.4,
 		});
 
 		this.allowBounce = true;

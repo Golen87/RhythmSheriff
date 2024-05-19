@@ -8,31 +8,32 @@ export default class Enemy extends Phaser.GameObjects.Container {
 	public startY: number;
 
 	public isHit: boolean;
-	private isDestroyed: boolean;
-	private bullet_holes: Phaser.GameObjects.Image[];
-	private hit_list: string[];
+	protected isDestroyed: boolean;
+	protected bullet_holes: Phaser.GameObjects.Image[];
+	protected hit_list: string[];
 
-	private appearedOn: number;
+	protected appearedOn: number;
 	public targetTime: number;
-	private score: "perfect" | "good" | "ok" | "bad" | "miss";
+	protected score: "perfect" | "good" | "ok" | "bad" | "miss";
 
 	public isHiding: boolean;
-	private hideFac: number;
+	protected hideFac: number;
 	public hideDist: number;
-	private hidingTime: number;
+	protected hidingTime: number;
 
-	private isTurned: boolean;
-	private turnFac: number;
-	private spinFac: number;
-	private turningTime: number;
-	private invert: boolean;
+	protected isTurned: boolean;
+	protected turnFac: number;
+	protected spinFac: number;
+	protected spinFacTween: Phaser.Tweens.Tween;
+	protected turningTime: number;
+	protected invert: boolean;
 
-	private size: number;
+	protected size: number;
 
-	private sprite: Phaser.GameObjects.Sprite;
+	protected sprite: Phaser.GameObjects.Sprite;
 
-	private target_destroyed_1: Sound;
-	private destroy_pieces: Sound;
+	protected target_destroyed_1: Sound;
+	protected destroy_pieces: Sound;
 
 	constructor(scene: BaseScene, x: number, y: number, type: string) {
 		super(scene, x, y);
@@ -59,15 +60,14 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.isTurned = false;
 		this.turnFac = 0;
 		this.spinFac = 0;
+		this.spinFacTween = scene.tweens.add({ targets: this });
 		this.turningTime = -1;
 		this.invert = false;
 
 		this.size = 0.45;
-		this.setScale(this.size);
 
 		this.sprite = scene.add.sprite(0, 0, "cat", 0);
 		this.sprite.setOrigin(0.5, 1.0);
-		// this.sprite.setTint(0xff7777);
 		this.add(this.sprite);
 
 		this.target_destroyed_1 = new Sound(scene, "target_destroyed_1", {
@@ -76,56 +76,9 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.destroy_pieces = new Sound(scene, "destroy_pieces", {
 			volume: 0.5,
 		});
-
-		this.update(0, 0);
 	}
 
-	update(time: number, delta: number) {
-		let myTime = time - this.appearedOn;
-
-		this.scaleY += (this.size - this.scaleY) * 0.1;
-
-		//this.hideFac += Phaser.Math.Clamp(this.isHiding - this.hideFac, -delta/2, delta/2);
-		//this.turnFac += Phaser.Math.Clamp(this.isTurned - this.turnFac, -delta, delta);
-		//this.hideFac += (this.isHiding - this.hideFac) * 0.2;
-		//this.turnFac += (this.isTurned - this.turnFac) * 0.2;
-		this.spinFac += (0 - this.spinFac) * 0.1;
-		//let hideValue = Phaser.Math.Easing.Cubic.InOut(this.hideFac);
-		//let turnValue = Phaser.Math.Easing.Cubic.InOut(this.turnFac);
-
-		if (!this.isHiding) {
-			let t1 = this.getInterval(myTime, 0.0, 1.0);
-			let t2 = this.getInterval(myTime, 1.0, 2.0 - 0.05);
-			let t3 = this.getInterval(myTime, 2.5, 3.0);
-			let e1 = Phaser.Math.Easing.Cubic.Out(t1);
-			let e2 = Phaser.Math.Easing.Cubic.In(t2);
-			let e3 = Phaser.Math.Easing.Cubic.In(t3);
-			this.hideFac = 1 - 0.7 * e1 - 0.3 * e2 + 1.0 * e3;
-			let t4 = this.getInterval(myTime, 0.5, 2.0 - 0.05);
-			let e4 = Phaser.Math.Easing.Circular.In(t4);
-			this.turnFac = e4;
-		} else {
-			this.hideFac = 1;
-			this.turnFac = 0;
-		}
-
-		let hideValue = this.hideFac;
-		let turnValue = this.turnFac - this.spinFac;
-
-		let t = 1 - this.getInterval(myTime, 0.0, 2.0);
-		let e = Phaser.Math.Easing.Cubic.Out(t);
-		this.x =
-			this.startX +
-			e * (this.invert ? 1 : -1) * 30 * Math.cos(0.5 * myTime * (2 * Math.PI));
-		this.y = this.startY + this.hideDist * hideValue;
-
-		this.scaleX = this.size * Math.cos(turnValue * Math.PI);
-
-		// this.sprite.setFrame(2*(this.scaleX < 0) + 1*this.isDestroyed);
-		this.sprite.setFrame(
-			(this.scaleX < 0 ? 1 : 0) + (this.isDestroyed ? 0 : 0)
-		);
-	}
+	update(time: number, delta: number) {}
 
 	onBar(bar: number) {
 		this.scaleY *= 0.95;
@@ -149,41 +102,35 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		}
 	}
 
-	appear(time: number, invert: boolean, maxBar: number) {
-		this.hidingTime = (time + 3) % maxBar;
-		this.turningTime = (time + 1) % maxBar;
+	prepareToAppear(time: number, stayDuration: number, invert: boolean) {
+		this.appearedOn = time;
+		this.targetTime = time + stayDuration;
+		this.isHiding = false;
+		this.isTurned = false;
+		this.turnFac = 0;
+		this.isHit = false;
+		this.isDestroyed = false;
+		this.invert = invert;
+		this.score = "miss";
 
-		if (this.isHiding) {
-			this.appearedOn = time;
-			this.targetTime = time + 2;
-			this.isHiding = false;
-			this.isTurned = false;
-			this.turnFac = 0;
-			this.isHit = false;
-			this.isDestroyed = false;
-			this.invert = invert;
-			this.score = "miss";
-
-			for (var i = this.bullet_holes.length - 1; i >= 0; i--) {
-				let hole = this.bullet_holes[i];
-				this.remove(hole);
-				hole.destroy();
-			}
-
-			this.emit("playCatCue");
+		// Clear bullet holes
+		for (var i = this.bullet_holes.length - 1; i >= 0; i--) {
+			let hole = this.bullet_holes[i];
+			this.remove(hole);
+			hole.destroy();
 		}
 	}
+
+	appear(time: number, invert: boolean, maxBar: number) {}
 
 	hide() {
 		this.hidingTime = -1;
 		this.isHiding = true;
-		this.emit("score", this.score, false);
 	}
 
 	getHitPoint(rating: "perfect" | "good" | "ok" | "bad"): number[] | null {
 		const points = {
 			perfect: [
-				[-0.117, -0.697],
 				[-0.025, -0.754],
 				[-0.023, -0.69],
 				[-0.018, -0.637],
@@ -191,7 +138,6 @@ export default class Enemy extends Phaser.GameObjects.Container {
 				[-0.008, -0.551],
 				[0.0, -0.496],
 				[0.005, -0.453],
-				[0.078, -0.697],
 			],
 			good: [
 				[-0.16, -0.737],
@@ -271,14 +217,6 @@ export default class Enemy extends Phaser.GameObjects.Container {
 	}
 
 	canHit(time: number) {
-		let myTime = time - this.appearedOn;
-
-		if (this.isHiding) {
-			return false;
-		}
-		if (myTime > 0.5 && myTime < 2.8) {
-			return true;
-		}
 		return false;
 	}
 
@@ -303,14 +241,20 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.isHit = true;
 		this.score = rating;
 
-		if (rating == "perfect") {
-			this.kill(true);
-		} else if (rating == "good") {
-			this.kill(false);
-		} else if (rating == "ok") {
-			this.spinFac = 2;
-		} else if (rating == "bad") {
-			this.spinFac = 2;
+		switch (rating) {
+			case "perfect":
+				this.kill(true);
+				break;
+
+			case "good":
+				this.kill(false);
+				this.applySmallSpin();
+				break;
+
+			case "ok":
+			case "bad":
+				this.applyLargeSpin();
+				break;
 		}
 	}
 
@@ -323,6 +267,33 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		else this.destroy_pieces.play();
 
 		this.isDestroyed = true;
+	}
+
+	applySmallSpin() {
+		this.spinFacTween.stop();
+		this.spinFacTween = this.scene.tweens.addCounter({
+			duration: 500,
+			ease: (x: number) => {
+				// https://www.desmos.com/calculator/7ybratjzqe
+				let a = 1 - Math.pow(1 - x, 3);
+				let b = 1 + 2 * Math.pow(x - 1, 3) + Math.pow(x - 1, 2);
+				let y = 5 * a * (1 - b);
+				this.spinFac = 0.3 * y;
+			},
+			onComplete: () => {
+				this.spinFac = 0;
+			},
+		});
+	}
+
+	applyLargeSpin() {
+		this.spinFacTween.stop();
+		this.spinFacTween = this.scene.tweens.add({
+			targets: this,
+			spinFac: { from: 2, to: 0 },
+			duration: 1000,
+			ease: "Back.Out",
+		});
 	}
 
 	getInterval(x: number, min: number, max: number) {

@@ -1,17 +1,47 @@
 import BaseScene from "./BaseScene";
 import Player from "@/components/Player";
 import Enemy from "@/components/Enemy";
-import Enemy2 from "@/components/Enemy2";
+import EnemyCat from "@/components/EnemyCat";
+import EnemyRat from "@/components/EnemyRat";
 import Music from "@/components/Music";
 import Sound from "@/components/Sound";
 import DialogueBox from "@/components/DialogueBox";
 import songMaps from "@/music/songMaps";
 
 export default class LevelScene extends BaseScene {
+	private cues: { [key: number]: string };
+	private eventMaxRange: number;
+	private practiceCount: number;
+	private scores: ("perfect" | "good" | "ok" | "bad" | "miss")[];
+	private progress: string | null;
+	private lastBarTime: number;
+	private canSkip: boolean;
+	private blockTap: boolean;
+	private invert: boolean;
+
+	private background: Phaser.GameObjects.Image;
+	private player: Player;
+	private enemies: Enemy[];
+	private dummy: EnemyCat;
+
+	private dialogueBox: DialogueBox;
+	private dialogueList: string[];
+	private skipText: Phaser.GameObjects.Text;
+
+	private woodBack: Phaser.GameObjects.Sprite;
+	private woodBlock: Phaser.GameObjects.Image;
+	private woodFront: Phaser.GameObjects.Image;
+
+	private sandstormGraphics: Phaser.GameObjects.Graphics;
+	private tumbleBg: Phaser.GameObjects.Sprite;
+	private tumbleBgStartY: number;
+	private tumbleFg: Phaser.GameObjects.Sprite;
+	private tumbleFgStartY: number;
+
 	private practiceMusic: Music;
 	private levelMusic: Music;
-
 	private currentMusic: Music | null;
+
 	private ButtonDown: Sound;
 	private ButtonUp: Sound;
 	private shoot_1: Sound;
@@ -22,31 +52,6 @@ export default class LevelScene extends BaseScene {
 	private robotEject: Sound;
 	private catCue: Sound;
 	private ratCue: Sound;
-
-	private background: Phaser.GameObjects.Image;
-	private tumbleBg: Phaser.GameObjects.Sprite;
-	private tumbleBgStartY: number;
-	private tumbleFg: Phaser.GameObjects.Sprite;
-	private tumbleFgStartY: number;
-	private woodBack: Phaser.GameObjects.Sprite;
-	private dummy: Enemy;
-	private enemies: (Enemy | Enemy2)[];
-	private wood_block: Phaser.GameObjects.Image;
-	private wood_front: Phaser.GameObjects.Image;
-	private player: Player;
-	private graphics: Phaser.GameObjects.Graphics;
-	private dialogueBox: DialogueBox;
-	private dialogueList: string[];
-	private eventMaxRange: number;
-	private scores: ("perfect" | "good" | "ok" | "bad" | "miss")[];
-	private progress: string | null;
-	private practiceCount: number;
-	private canSkip: boolean;
-	private blockTap: boolean;
-	private lastBarTime: number;
-	private invert: boolean;
-	private skipText: Phaser.GameObjects.Text;
-	private cues: { [key: number]: string };
 
 	constructor() {
 		super({ key: "LevelScene" });
@@ -120,16 +125,16 @@ export default class LevelScene extends BaseScene {
 		this.woodBack.setScale(0.25);
 		this.woodBack.setTint(0x936b48);
 
-		this.dummy = new Enemy(this, 680, 490, "cat");
+		this.dummy = new EnemyCat(this, 680, 490);
 		this.enemies = [
-			new Enemy(this, 650, 490, "cat"),
-			new Enemy(this, 650, 490, "cat"),
-			new Enemy(this, 650, 490, "cat"),
-			new Enemy(this, 650, 490, "cat"),
-			new Enemy2(this, 650, 490, "rat"),
-			new Enemy2(this, 650, 490, "rat"),
-			new Enemy2(this, 650, 490, "rat"),
-			new Enemy2(this, 650, 490, "rat"),
+			new EnemyCat(this, 650, 490),
+			new EnemyCat(this, 650, 490),
+			new EnemyCat(this, 650, 490),
+			new EnemyCat(this, 650, 490),
+			new EnemyRat(this, 650, 490),
+			new EnemyRat(this, 650, 490),
+			new EnemyRat(this, 650, 490),
+			new EnemyRat(this, 650, 490),
 		];
 		this.enemies.forEach((enemy) => {
 			enemy.on("score", this.onScore, this);
@@ -143,16 +148,16 @@ export default class LevelScene extends BaseScene {
 			});
 		});
 
-		this.wood_block = this.add.sprite(650, 490, "wood_block");
-		this.wood_block.setOrigin(0.53, 0.02);
-		this.wood_block.setScale(0.25);
-		this.wood_block.setTint(0xaf825b);
-		this.wood_block.setDepth(100);
+		this.woodBlock = this.add.sprite(650, 490, "wood_block");
+		this.woodBlock.setOrigin(0.53, 0.02);
+		this.woodBlock.setScale(0.25);
+		this.woodBlock.setTint(0xaf825b);
+		this.woodBlock.setDepth(100);
 
-		this.wood_front = this.add.sprite(650, 490, "wood_front");
-		this.wood_front.setScale(0.25);
-		this.wood_front.setTint(0x936b48);
-		this.wood_front.setDepth(100);
+		this.woodFront = this.add.sprite(650, 490, "wood_front");
+		this.woodFront.setScale(0.25);
+		this.woodFront.setTint(0x936b48);
+		this.woodFront.setDepth(100);
 
 		// Tumble foreground
 		this.tumbleFg = this.add.sprite(1500, 470, "tumble");
@@ -169,9 +174,9 @@ export default class LevelScene extends BaseScene {
 		this.player = new Player(this, 260, 570);
 		this.player.setDepth(100);
 
-		this.graphics = this.add.graphics();
-		this.graphics.setDepth(200);
-		this.graphics.fillGradientStyle(
+		this.sandstormGraphics = this.add.graphics();
+		this.sandstormGraphics.setDepth(200);
+		this.sandstormGraphics.fillGradientStyle(
 			0xc56000,
 			0xc56000,
 			0xffd54f,
@@ -181,8 +186,8 @@ export default class LevelScene extends BaseScene {
 			0.5,
 			0.5
 		);
-		this.graphics.setAlpha(0.0);
-		this.graphics.fillRect(0, 0, this.W, this.H);
+		this.sandstormGraphics.fillRect(0, 0, this.W, this.H);
+		this.sandstormGraphics.setAlpha(0);
 
 		/* Input */
 
@@ -674,7 +679,7 @@ export default class LevelScene extends BaseScene {
 				this.progress = "end_text";
 				this.dialogueList = [
 					"Wow. You're the real deal!",
-					"It's time to duel...\nGood luck, sheriff.",
+					"It's time to duel...\nGood luck, Sheriff.",
 				];
 				this.onProgress();
 			}
