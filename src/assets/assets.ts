@@ -6,9 +6,7 @@ const images: Image[] = [
 	image("background.png", "background"),
 	image("foreground.png", "foreground"),
 	image("title.png", "title"),
-	image("ending1.png", "ending1"),
-	image("ending2.png", "ending2"),
-	image("ending3.png", "ending3"),
+	image("bullet_line.png", "bullet_line"),
 
 	image("tumble.png", "tumble"),
 	image("shadow.png", "shadow"),
@@ -16,17 +14,21 @@ const images: Image[] = [
 	image("wood/wood_back.png", "wood_back"),
 	image("wood/wood_block.png", "wood_block"),
 
-	image("ratings/spiral.png", "try_again_spiral"),
-	image("ratings/ok.png", "ok"),
-	image("ratings/puff.png", "ok_puff"),
-	image("ratings/superb.png", "superb"),
-	image("ratings/superb_glow.png", "superb_glow"),
-	image("ratings/star_color.png", "superb_star_color"),
-	image("ratings/star_glow.png", "superb_star_glow"),
-	image("ratings/star_inside.png", "superb_star_inside"),
-	image("ratings/star_outline.png", "superb_star_outline"),
-	image("ratings/red_star.png", "superb_red_star"),
-	image("ratings/white_star.png", "superb_white_star"),
+	image("rh/ratings/spiral.png", "try_again_spiral"),
+	image("rh/ratings/ok.png", "ok"),
+	image("rh/ratings/puff.png", "ok_puff"),
+	image("rh/ratings/superb.png", "superb"),
+	image("rh/ratings/superb_glow.png", "superb_glow"),
+	image("rh/ratings/star_color.png", "superb_star_color"),
+	image("rh/ratings/star_glow.png", "superb_star_glow"),
+	image("rh/ratings/star_inside.png", "superb_star_inside"),
+	image("rh/ratings/star_outline.png", "superb_star_outline"),
+	image("rh/ratings/red_star.png", "superb_red_star"),
+	image("rh/ratings/white_star.png", "superb_white_star"),
+
+	image("endings/ending1.png", "ending1"),
+	image("endings/ending2.png", "ending2"),
+	image("endings/ending3.png", "ending3"),
 ];
 
 /* Spritesheets */
@@ -34,26 +36,22 @@ const spritesheets: SpriteSheet[] = [
 	spritesheet("dog/dog_2024.png", "dog", 700, 1000),
 	spritesheet("cat/cat_2024.png", "cat", 300, 550),
 	spritesheet("rat/rat.png", "rat", 400, 600),
-	spritesheet("plank.png", "plank", 300, 550),
 	spritesheet("bullet_hole/bullet_hole.png", "bullet_hole", 80, 80),
 
-	spritesheet("ratings/try_again.png", "try_again", 240, 96),
+	spritesheet("rh/ratings/try_again.png", "try_again", 240, 96),
 ];
 
 /* Audios */
 const audios: Audio[] = [
-	// music("title", "m_main_menu"),
-	// sound("tree/rustle", "t_rustle", 0.5),
-
-	music("BGM_EPILOGUE_BAD.ogg", "bgm_epilogue_bad"),
-	music("BGM_EPILOGUE_GOOD.ogg", "bgm_epilogue_good"),
-	music("BGM_EPILOGUE_GREAT.ogg", "bgm_epilogue_great"),
-	music("BGM_PERFECT_FAN.ogg", "bgm_perfect_fan"),
-	music("JINGLE_ANIME.ogg", "jingle_anime"),
-	music("JINGLE_EPILOGUE_BAD.ogg", "jingle_epilogue_bad"),
-	music("JINGLE_EPILOGUE_GOOD.ogg", "jingle_epilogue_good"),
-	music("JINGLE_EPILOGUE_GREAT.ogg", "jingle_epilogue_great"),
-	music("BGM_PRACTICE.ogg", "bgm_practice"),
+	music("rh/BGM_EPILOGUE_BAD.ogg", "bgm_epilogue_bad"),
+	music("rh/BGM_EPILOGUE_GOOD.ogg", "bgm_epilogue_good"),
+	music("rh/BGM_EPILOGUE_GREAT.ogg", "bgm_epilogue_great"),
+	music("rh/BGM_PERFECT_FAN.ogg", "bgm_perfect_fan"),
+	music("rh/JINGLE_ANIME.ogg", "jingle_anime"),
+	music("rh/JINGLE_EPILOGUE_BAD.ogg", "jingle_epilogue_bad"),
+	music("rh/JINGLE_EPILOGUE_GOOD.ogg", "jingle_epilogue_good"),
+	music("rh/JINGLE_EPILOGUE_GREAT.ogg", "jingle_epilogue_great"),
+	music("rh/BGM_PRACTICE.ogg", "bgm_practice"),
 	music("puppywestern_2_nocues.mp3", "puppywestern_2_nocues"),
 	music("Shady Monk & That Andy Guy - Tapatio.ogg", "tapatio"),
 
