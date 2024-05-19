@@ -3,7 +3,7 @@
 	"title": "Rhythm Sheriff",
 	"description": "Target practice to the beat. Originally made during LiU Fall Game Jam 2019.",
 	"itch": {
-		"upload": false,
+		"upload": true,
 		"username": "golen",
 		"game": "rhythm-sheriff"
 	},
