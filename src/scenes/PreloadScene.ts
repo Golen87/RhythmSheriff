@@ -51,18 +51,22 @@ export default class PreloadScene extends BaseScene {
 
 		// Load assets
 		for (let image of images) {
-			this.load.image(image.key, image.path);
+			if (image.path) this.load.image(image.key, image.path);
+			else console.error(`Image path not found: "${image.key}"`);
 		}
 
 		for (let image of spritesheets) {
-			this.load.spritesheet(image.key, image.path, {
-				frameWidth: image.width,
-				frameHeight: image.height,
-			});
+			if (image.path)
+				this.load.spritesheet(image.key, image.path, {
+					frameWidth: image.width,
+					frameHeight: image.height,
+				});
+			else console.error(`Spritesheet path not found: "${image.key}"`);
 		}
 
 		for (let audio of audios) {
-			this.load.audio(audio.key, audio.path);
+			if (audio.path) this.load.audio(audio.key, audio.path);
+			else console.error(`Audio path not found: "${audio.key}"`);
 		}
 	}
 
