@@ -114,42 +114,8 @@ export default class TitleScene extends BaseScene {
 		this.titleRhythm.setFill(gradient);
 		this.titleSheriff.setFill(gradient);
 
-		const Y = 223;
-		let lineL = this.add.line(
-			0,
-			0,
-			this.CX - 330,
-			Y,
-			this.CX + 290,
-			Y,
-			0xffffff
-		);
-		lineL.setLineWidth(0, 4);
-		lineL.setOrigin(0);
-		lineL.setAlpha(0xdd / 0xff);
-		let lineR = this.add.line(
-			0,
-			0,
-			this.CX + 290,
-			Y,
-			this.CX + 300,
-			Y,
-			0xffffff
-		);
-		lineR.setLineWidth(4, 0);
-		lineR.setOrigin(0);
-		lineR.setAlpha(0xdd / 0xff);
-
-		this.graphics = this.add.graphics({
-			x: 0,
-			y: 0,
-			fillStyle: {
-				color: 0xeeeeee,
-				alpha: 1,
-			},
-		});
-		this.graphics.fillCircle(this.CX + 310 + 24, Y, 5.6);
-		this.graphics.fillRect(this.CX + 310, Y - 6, 24, 12);
+		let bulletLine = this.add.image(this.CX + 10, 223, "bullet_line");
+		bulletLine.setScale(670 / bulletLine.width);
 
 		/* Music */
 
