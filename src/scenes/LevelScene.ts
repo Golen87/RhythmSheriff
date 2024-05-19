@@ -166,7 +166,7 @@ export default class LevelScene extends BaseScene {
 		this.fitToScreen(fg);
 
 		// Player
-		this.player = new Player(this, 280, 570);
+		this.player = new Player(this, 260, 570);
 		this.player.setDepth(100);
 
 		this.graphics = this.add.graphics();
@@ -353,6 +353,7 @@ export default class LevelScene extends BaseScene {
 		}
 		if (this.cues[spinCheckTime] == "spin") {
 			this.player.play("spin");
+			this.player.holsterTime = this.currentMusic.getBar() + 2;
 		}
 		if (this.cues[spinCheckTime] == "stop") {
 			this.player.play("unequip");
@@ -573,7 +574,7 @@ export default class LevelScene extends BaseScene {
 		// Cooldown until holsting the gun
 		// this.player.holsterTime = Math.ceil(this.currentMusic.getBarTime() + 0.75) % this.currentMusic.maxBar;
 		this.player.holsterTime =
-			(Math.round((this.currentMusic.getBarTime() + 1.4) * 1) / 1) %
+			Math.round(this.currentMusic.getBarTime() + 1.35) %
 			this.currentMusic.maxBar;
 	}
 
@@ -587,6 +588,7 @@ export default class LevelScene extends BaseScene {
 				this.audienceClap.play();
 				this.addEvent(1000, this.showDummy);
 				this.addEvent(1000 + 1000, this.onProgress);
+				this.player.play("unequip");
 			} else {
 				console.warn("Failed onProgress");
 			}

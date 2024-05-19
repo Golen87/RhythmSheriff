@@ -7,7 +7,7 @@ export default class Player extends Phaser.GameObjects.Container {
 	private shadow: Phaser.GameObjects.Image;
 	private sprite: Phaser.GameObjects.Sprite;
 
-	private karate_kick_swing: Sound;
+	private unequipSound: Sound;
 
 	constructor(scene: BaseScene, x: number, y: number) {
 		super(scene, 0, 0);
@@ -26,8 +26,8 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.sprite.setScale(this.size);
 		this.add(this.sprite);
 
-		this.karate_kick_swing = new Sound(scene, "karate_kick_swing", {
-			volume: 0.5,
+		this.unequipSound = new Sound(scene, "karate_kick_swing", {
+			volume: 0.45,
 		});
 
 		this.setupAnimations();
@@ -46,11 +46,18 @@ export default class Player extends Phaser.GameObjects.Container {
 		if (this.holsterTime == time) {
 			this.holsterTime = -1;
 			this.play("unequip");
-			this.karate_kick_swing.play();
 		}
 	}
 
 	play(key: string) {
+		if (key == "unequip") {
+			if (this.key != "unequip") {
+				this.unequipSound.play();
+			} else {
+				return;
+			}
+		}
+
 		this.sprite.play(key);
 	}
 
@@ -67,7 +74,7 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.scene.anims.create({
 			key: "unequip",
 			frames: [
-				{ key: "dog", frame: 1, duration: 150 },
+				{ key: "dog", frame: 1, duration: 120 },
 				{ key: "dog", frame: 0, duration: 0 },
 			],
 		});
@@ -89,21 +96,17 @@ export default class Player extends Phaser.GameObjects.Container {
 				{ key: "dog", frame: 14, duration: 0 },
 			],
 		});
-		// this.scene.anims.create({
-		// 	key: "small_shoot",
-		// 	frames: [
-		// 		{ key: "dog", frame: 7, duration: 100 },
-		// 		{ key: "dog", frame: 8, duration: 300 },
-		// 		{ key: "dog", frame: 9, duration: 0 },
-		// 	],
-		// });
 		this.scene.anims.create({
 			key: "small_shoot_miss",
 			frames: [
 				{ key: "dog", frame: 6, duration: 100 },
 				{ key: "dog", frame: 11, duration: 200 },
-				{ key: "dog", frame: 12, duration: 0  },
+				{ key: "dog", frame: 12, duration: 0 },
 			],
 		});
+	}
+
+	get key(): string {
+		return this.sprite.anims.currentAnim?.key || "";
 	}
 }
