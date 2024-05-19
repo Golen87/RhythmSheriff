@@ -11,7 +11,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.WEBGL,
 	width: 1000,
 	height: 600,
-	mipmapFilter: "LINEAR_MIPMAP_LINEAR",
+	// mipmapFilter: "LINEAR_MIPMAP_LINEAR",
 	roundPixels: false,
 	scale: {
 		mode: Phaser.Scale.FIT,
