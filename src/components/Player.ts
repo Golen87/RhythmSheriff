@@ -8,6 +8,7 @@ export default class Player extends Phaser.GameObjects.Container {
 	private sprite: Phaser.GameObjects.Sprite;
 
 	private unequipSound: Sound;
+	public allowBounce: boolean;
 
 	constructor(scene: BaseScene, x: number, y: number) {
 		super(scene, 0, 0);
@@ -30,15 +31,19 @@ export default class Player extends Phaser.GameObjects.Container {
 			volume: 0.45,
 		});
 
+		this.allowBounce = true;
+
 		this.setupAnimations();
 	}
 
 	update(time: number, delta: number) {
-		this.sprite.scaleY += (this.size - this.sprite.scaleY) * 0.1;
+		this.sprite.scaleY += (this.size - this.sprite.scaleY) * 0.09;
 	}
 
 	onBar(bar: number) {
-		this.sprite.scaleY *= 0.95;
+		if (this.allowBounce) {
+			this.sprite.scaleY *= 0.95;
+		}
 	}
 
 	onBeat(time: number) {
@@ -65,9 +70,9 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.scene.anims.create({
 			key: "spin",
 			frames: [
-				{ key: "dog", frame: 7, duration: 40 },
-				{ key: "dog", frame: 8, duration: 40 },
-				{ key: "dog", frame: 9, duration: 40 },
+				{ key: "dog", frame: 7, duration: 50 },
+				{ key: "dog", frame: 8, duration: 50 },
+				{ key: "dog", frame: 9, duration: 50 },
 			],
 			repeat: -1,
 		});
@@ -81,7 +86,7 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.scene.anims.create({
 			key: "big_shoot",
 			frames: [
-				{ key: "dog", frame: 2, duration: 40 },
+				{ key: "dog", frame: 2, duration: 50 },
 				{ key: "dog", frame: 3, duration: 80 },
 				{ key: "dog", frame: 4, duration: 250 },
 				{ key: "dog", frame: 5, duration: 0 },

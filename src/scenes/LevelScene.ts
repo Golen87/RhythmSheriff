@@ -354,9 +354,11 @@ export default class LevelScene extends BaseScene {
 		if (this.cues[spinCheckTime] == "spin") {
 			this.player.play("spin");
 			this.player.holsterTime = this.currentMusic.getBar() + 3;
-		}
-		if (this.cues[spinCheckTime] == "stop") {
+		} else if (this.cues[spinCheckTime] == "holster") {
 			this.player.play("unequip");
+		} else if (this.cues[spinCheckTime] == "stop") {
+			this.player.play("unequip");
+			this.player.allowBounce = false;
 		}
 
 		// if (this.cues[catCheckTime-0.0] == 'cat')
@@ -572,7 +574,6 @@ export default class LevelScene extends BaseScene {
 		}
 
 		// Cooldown until holsting the gun
-		// this.player.holsterTime = Math.ceil(this.currentMusic.getBarTime() + 0.75) % this.currentMusic.maxBar;
 		this.player.holsterTime =
 			Math.round(this.currentMusic.getBarTime() + 1.35) %
 			this.currentMusic.maxBar;
