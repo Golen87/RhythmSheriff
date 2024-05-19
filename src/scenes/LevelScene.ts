@@ -353,7 +353,7 @@ export default class LevelScene extends BaseScene {
 		}
 		if (this.cues[spinCheckTime] == "spin") {
 			this.player.play("spin");
-			this.player.holsterTime = this.currentMusic.getBar() + 2;
+			this.player.holsterTime = this.currentMusic.getBar() + 3;
 		}
 		if (this.cues[spinCheckTime] == "stop") {
 			this.player.play("unequip");
