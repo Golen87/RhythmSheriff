@@ -61,7 +61,6 @@ const puppywestern = {
 // 2022 cues for Tapatio by Shady Monk
 const tapatio = {
 	// Intro
-	[0]: "spin",
 	[8 + 2]: "cat",
 	[8 + 6]: "cat",
 	[8 + 10]: "cat",
