@@ -1,30 +1,6 @@
 import BaseScene from "@/scenes/BaseScene";
 import Music from "@/components/Music";
 
-import { title, version } from "@/version.json";
-
-const creditsLeft = `${title} 
-
-@Handle
-@Handle
-@Handle`;
-
-const creditsRight = `
-
-role
-role
-role`;
-
-export class TitleScene2 extends BaseScene {
-	constructor() {
-		super({ key: "TitleScene" });
-	}
-
-	create(): void {}
-
-	update(time: number, delta: number) {}
-}
-
 export default class TitleScene extends BaseScene {
 	public hintText: Phaser.GameObjects.Text;
 	public circle: Phaser.GameObjects.Arc;
