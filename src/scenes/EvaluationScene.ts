@@ -48,9 +48,9 @@ export default class EvaluationScene extends BaseScene {
 			perfect: "bgm_perfect_fan",
 		}[result.rating];
 		let text = {
-			bad: "Fast is fine, but accuracy\nis everything.",
+			bad: "You couldn't hit the\nbroad side of a barn.",
 			good: "Well, I think of you as a\nstraight shooter...\nmost of the time.",
-			great: "There's a new sheriff in town.",
+			great: "You've got a steady hand\nand a sharp eye, partner.",
 			perfect: "There's a new sheriff in town.\nY'all be cool. Right on.",
 		}[result.rating];
 

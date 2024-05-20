@@ -39,8 +39,8 @@ export default class EpilogueScene extends BaseScene {
 		let text = {
 			bad: "Better luck next time.",
 			good: "Keep practicing.",
-			great: "Amazing work.",
-			perfect: "Perfection.",
+			great: "That was some great practice.",
+			perfect: "Steadiest hand in the West!",
 		}[result.rating];
 
 		if (this.music) {
