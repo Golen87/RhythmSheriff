@@ -71,8 +71,6 @@ export default class LevelScene extends BaseScene {
 		}
 
 		if (!this.levelMusic) {
-			// this.levelMusic = new Music(this, 'puppywestern_2_nocues', { volume: 0.5 });
-			// this.levelMusic = new Music(this, 'samurai_slice', { volume: 0.4 });
 			this.levelMusic = new Music(this, "tapatio", { volume: 0.4 });
 
 			this.levelMusic.on("complete", this.onLevelComplete, this);
@@ -275,27 +273,6 @@ export default class LevelScene extends BaseScene {
 			);
 			keySkip.on("down", this.onSkipDown, this);
 			keySkip.on("up", this.onSkipUp, this);
-
-			let keyBack = this.input.keyboard.addKey(
-				Phaser.Input.Keyboard.KeyCodes.B
-			);
-			keyBack.on(
-				"down",
-				() => {
-					if (this.currentMusic) this.currentMusic.seek -= 4;
-				},
-				this
-			);
-			let keyForward = this.input.keyboard.addKey(
-				Phaser.Input.Keyboard.KeyCodes.F
-			);
-			keyForward.on(
-				"down",
-				() => {
-					if (this.currentMusic) this.currentMusic.seek += 4;
-				},
-				this
-			);
 		}
 
 		this.input.on("pointerdown", this.onTapDown, this);
