@@ -218,9 +218,9 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.bulletHoles.push(hole);
 
 		// Broadcast bullet hole position
-		let coord = { x: 0, y: 0 };
+		let coord = new Phaser.Math.Vector2();
 		hole.getCenter(coord, true);
-		this.emit("bulletHole", coord.x, coord.y);
+		this.emit("bulletHole", coord);
 	}
 
 	isThreat() {

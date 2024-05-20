@@ -91,6 +91,7 @@ export default class TitleScene extends BaseScene {
 		this.titleSheriff.setFill(gradient);
 
 		let bulletLine = this.add.image(this.CX + 10, 223, "bullet_line");
+		bulletLine.setAlpha(0.9);
 		bulletLine.setScale(670 / bulletLine.width);
 
 		/* Music */

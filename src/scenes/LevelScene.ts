@@ -118,10 +118,12 @@ export default class LevelScene extends BaseScene {
 		this.tumbleBg = this.add.sprite(1500, 440, "tumble");
 		this.tumbleBgStartY = this.tumbleBg.y;
 		this.tumbleBg.setScale(0.55);
+		this.tumbleBg.setDepth(30);
 
 		this.woodBack = this.add.sprite(650, 490, "wood_back");
 		this.woodBack.setScale(0.25);
 		this.woodBack.setTint(0x936b48);
+		this.woodBack.setDepth(40);
 
 		this.dummy = new EnemyCat(this, 680, 490);
 		this.enemies = [
@@ -144,8 +146,8 @@ export default class LevelScene extends BaseScene {
 				this.robotEject.play();
 				this.ratCue.play();
 			});
-			enemy.on("bulletHole", (x: number, y: number) => {
-				this.addBulletLine(x, y);
+			enemy.on("bulletHole", (holePosition: Phaser.Math.Vector2) => {
+				this.addBulletLine(this.player.getGunPosition(), holePosition);
 			});
 		});
 
@@ -158,25 +160,25 @@ export default class LevelScene extends BaseScene {
 		this.woodFront = this.add.sprite(650, 490, "wood_front");
 		this.woodFront.setScale(0.25);
 		this.woodFront.setTint(0x936b48);
-		this.woodFront.setDepth(100);
+		this.woodFront.setDepth(110);
 
 		// Tumble foreground
 		this.tumbleFg = this.add.sprite(1500, 470, "tumble");
 		this.tumbleFgStartY = this.tumbleFg.y;
 		this.tumbleFg.setScale(0.8);
-		this.tumbleFg.setDepth(100);
+		this.tumbleFg.setDepth(120);
 
 		// Foreground
 		let fg = this.add.image(this.CX, this.CY, "foreground");
-		fg.setDepth(100);
+		fg.setDepth(130);
 		this.fitToScreen(fg);
 
 		// Player
 		this.player = new Player(this, 260, 570);
-		this.player.setDepth(100);
+		this.player.setDepth(200);
 
 		this.sandstormGraphics = this.add.graphics();
-		this.sandstormGraphics.setDepth(200);
+		this.sandstormGraphics.setDepth(300);
 		this.sandstormGraphics.fillGradientStyle(
 			0xc56000,
 			0xc56000,
@@ -325,7 +327,7 @@ export default class LevelScene extends BaseScene {
 			if (enemy) {
 				this.invert = !this.invert; // Temporary
 				enemy.appear(time, this.invert, this.currentMusic.maxBar);
-				enemy.setDepth(10 + time / 1000);
+				enemy.setDepth(50 + time / 1000);
 			}
 		}
 		if (this.cues[ratCheckTime] == "rat") {
@@ -333,7 +335,7 @@ export default class LevelScene extends BaseScene {
 			if (enemy) {
 				this.invert = !this.invert; // Temporary
 				enemy.appear(time, this.invert, this.currentMusic.maxBar);
-				enemy.setDepth(10 + time / 1000);
+				enemy.setDepth(50 + time / 1000);
 			}
 		}
 		if (this.cues[spinCheckTime] == "spin") {
@@ -492,24 +494,36 @@ export default class LevelScene extends BaseScene {
 		}
 	}
 
-	addBulletLine(holeX: number, holeY: number) {
-		let { x: gunX, y: gunY } = this.player.getGunPosition();
-		let bulletLine = this.add.line(0, 0, gunX, gunY, holeX, holeY, 0xffffff);
-		bulletLine.setLineWidth(4, 0);
-		bulletLine.setOrigin(0);
-		bulletLine.setDepth(90);
+	addBulletLine(gun: Phaser.Math.Vector2, hole: Phaser.Math.Vector2) {
+		const end = new Phaser.Math.Vector2(
+			hole.x + 0.5 * (hole.x - gun.x),
+			hole.y + 0.5 * (hole.y - gun.y)
+		);
+
+		const lineFg = this.add.line(0, 0, gun.x, gun.y, hole.x, hole.y, 0xffffff);
+		lineFg.setAlpha(0);
+		lineFg.setDepth(60);
+		lineFg.setOrigin(0);
+		lineFg.setBlendMode(Phaser.BlendModes.ADD);
+		const lineBg = this.add.line(0, 0, hole.x, hole.y, end.x, end.y, 0xffffff);
+		lineBg.setAlpha(0);
+		lineBg.setDepth(30);
+		lineBg.setOrigin(0);
+		lineBg.setBlendMode(Phaser.BlendModes.ADD);
 
 		this.tweens.addCounter({
 			ease: "Cubic.Out",
-			duration: 500,
+			duration: 250,
 			onUpdate: (tween) => {
-				let value = tween.getValue();
-				let width = 4 * (1 - value);
-				bulletLine.setLineWidth(width, width / 2);
-				bulletLine.setAlpha(1 - value / 2);
+				let t = 1 - tween.getValue();
+				lineFg.setLineWidth(0 * t, 6 * t);
+				lineBg.setLineWidth(4 * t, 0 * t);
+				lineFg.setAlpha(0.5 * t);
+				lineBg.setAlpha(0.5 * t);
 			},
 			onComplete: () => {
-				bulletLine.destroy();
+				lineFg.destroy();
+				lineBg.destroy();
 			},
 		});
 	}
