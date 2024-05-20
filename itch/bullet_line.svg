@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -6 670 12">
 	<path
-		d="M 0 0 L 620 -2 L 630 0 L 620 2"
-		fill="#f7f7f7" fill-opacity="87%" />
+		d="M 0 0 L 620 -4 L 630 0 L 620 4"
+		fill="white" />
 	<path
 		d="M 640 -6 L 664 -6 C 667 -6 670 -4 670 0 C 670 4 667 6 664 6 L 640 6"
-		fill="#f7f7f7" fill-opacity="100%" />
+		fill="white" />
 </svg>
