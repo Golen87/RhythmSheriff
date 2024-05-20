@@ -146,6 +146,9 @@ export default class LevelScene extends BaseScene {
 				this.robotEject.play();
 				this.ratCue.play();
 			});
+			enemy.on("bulletHole", (x: number, y: number) => {
+				this.addBulletLine(x, y);
+			});
 		});
 
 		this.woodBlock = this.add.sprite(650, 490, "wood_block");
@@ -362,7 +365,7 @@ export default class LevelScene extends BaseScene {
 		} else if (this.cues[spinCheckTime] == "holster") {
 			this.player.play("unequip");
 		} else if (this.cues[spinCheckTime] == "stop") {
-			this.player.play("unequip");
+			this.player.play("unequip", false);
 			this.player.allowBounce = false;
 		}
 
@@ -512,6 +515,28 @@ export default class LevelScene extends BaseScene {
 		}
 	}
 
+	addBulletLine(holeX: number, holeY: number) {
+		let { x: gunX, y: gunY } = this.player.getGunPosition();
+		let bulletLine = this.add.line(0, 0, gunX, gunY, holeX, holeY, 0xffffff);
+		bulletLine.setLineWidth(4, 0);
+		bulletLine.setOrigin(0);
+		bulletLine.setDepth(90);
+
+		this.tweens.addCounter({
+			ease: "Cubic.Out",
+			duration: 500,
+			onUpdate: (tween) => {
+				let value = tween.getValue();
+				let width = 4 * (1 - value);
+				bulletLine.setLineWidth(width, width / 2);
+				bulletLine.setAlpha(1 - value / 2);
+			},
+			onComplete: () => {
+				bulletLine.destroy();
+			},
+		});
+	}
+
 	getClosestEnemy(time: number) {
 		let record = null;
 		let enemy = null;
@@ -556,8 +581,6 @@ export default class LevelScene extends BaseScene {
 				rating = "bad";
 			}
 
-			enemy.hit(rating);
-
 			if (rating == "perfect") {
 				this.player.play("big_shoot");
 				this.shoot_3.play();
@@ -572,9 +595,11 @@ export default class LevelScene extends BaseScene {
 				this.shoot_1.play();
 				this.miss.play();
 			}
+
+			enemy.hit(rating);
 		} else {
 			this.player.play("small_shoot_miss");
-			this.shoot_1.play();
+			// this.shoot_1.play();
 			this.miss.play();
 		}
 
@@ -609,7 +634,6 @@ export default class LevelScene extends BaseScene {
 			if (!this.progress) {
 				this.progress = "cat_text";
 				this.dialogueList = [
-					// "Today we're practicing target shooting.",
 					"In a duel, you must match your opponent's speed.",
 					"When your opponent draws their weapon...\nstrike back!",
 				];

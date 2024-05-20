@@ -15,7 +15,7 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.scene = scene;
 		scene.add.existing(this);
 
-		this.size = 0.6;
+		this.size = 0.57;
 		this.holsterTime = -1;
 
 		this.shadow = scene.add.image(x - 10, y - 20, "shadow");
@@ -54,10 +54,10 @@ export default class Player extends Phaser.GameObjects.Container {
 		}
 	}
 
-	play(key: string) {
+	play(key: string, playSound = true) {
 		if (key == "unequip") {
 			if (this.key != "unequip") {
-				this.unequipSound.play();
+				if (playSound) this.unequipSound.play();
 			} else {
 				return;
 			}
@@ -87,7 +87,7 @@ export default class Player extends Phaser.GameObjects.Container {
 			key: "big_shoot",
 			frames: [
 				{ key: "dog", frame: 2, duration: 50 },
-				{ key: "dog", frame: 3, duration: 80 },
+				{ key: "dog", frame: 3, duration: 100 },
 				{ key: "dog", frame: 4, duration: 250 },
 				{ key: "dog", frame: 5, duration: 0 },
 			],
@@ -95,8 +95,8 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.scene.anims.create({
 			key: "big_shoot_miss",
 			frames: [
-				{ key: "dog", frame: 2, duration: 40 },
-				{ key: "dog", frame: 3, duration: 80 },
+				{ key: "dog", frame: 2, duration: 50 },
+				{ key: "dog", frame: 3, duration: 100 },
 				{ key: "dog", frame: 13, duration: 250 },
 				{ key: "dog", frame: 14, duration: 0 },
 			],
@@ -109,6 +109,18 @@ export default class Player extends Phaser.GameObjects.Container {
 				{ key: "dog", frame: 12, duration: 0 },
 			],
 		});
+	}
+
+	// Return the gun position in world coordinates.
+	getGunPosition() {
+		const point = new Phaser.Math.Vector2();
+		this.sprite.getBottomLeft(point, true);
+		const offset =
+			this.key === "small_shoot_miss"
+				? new Phaser.Math.Vector2(531, -431)
+				: new Phaser.Math.Vector2(586, -561);
+		point.add(offset.scale(this.size));
+		return point;
 	}
 
 	get key(): string {
