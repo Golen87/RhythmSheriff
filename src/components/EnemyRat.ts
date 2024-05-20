@@ -34,7 +34,6 @@ export default class EnemyRat extends Enemy {
 			this.turnFac = 0;
 		}
 
-		let hideValue = this.hideFac;
 		let turnValue = this.turnFac - this.spinFac;
 
 		let t = 1 - this.getInterval(myTime, 0.0, 1.5);
@@ -42,7 +41,7 @@ export default class EnemyRat extends Enemy {
 		this.x =
 			this.startX +
 			e * (this.invert ? 1 : -1) * 30 * Math.sin(myTime * (2 * Math.PI));
-		this.y = this.startY + this.hideDist * hideValue;
+		this.y = this.startY + this.hideDist * this.hideFac;
 
 		this.scaleX = this.size * Math.cos(turnValue * Math.PI);
 		this.scaleY += (this.size - this.scaleY) * 0.1;

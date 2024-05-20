@@ -9,8 +9,8 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 	public isHit: boolean;
 	protected isDestroyed: boolean;
-	protected bullet_holes: Phaser.GameObjects.Image[];
-	protected hit_list: string[];
+	protected bulletHoles: Phaser.GameObjects.Image[];
+	protected hitList: string[];
 
 	protected appearedOn: number;
 	public targetTime: number;
@@ -46,8 +46,8 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 		this.isHit = false;
 		this.isDestroyed = false;
-		this.bullet_holes = [];
-		this.hit_list = [];
+		this.bulletHoles = [];
+		this.hitList = [];
 
 		this.appearedOn = 0;
 		this.targetTime = 0;
@@ -114,8 +114,9 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.score = "miss";
 
 		// Clear bullet holes
-		for (var i = this.bullet_holes.length - 1; i >= 0; i--) {
-			let hole = this.bullet_holes[i];
+		this.hitList = [];
+		for (var i = this.bulletHoles.length - 1; i >= 0; i--) {
+			let hole = this.bulletHoles[i];
 			this.remove(hole);
 			hole.destroy();
 		}
@@ -128,91 +129,50 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.isHiding = true;
 	}
 
-	getHitPoint(rating: "perfect" | "good" | "ok" | "bad"): number[] | null {
+	getHitPoint(rating: "perfect" | "good" | "ok" | "bad"): number[] {
 		const points = {
-			perfect: [
-				[-0.025, -0.754],
-				[-0.023, -0.69],
-				[-0.018, -0.637],
-				[-0.015, -0.599],
-				[-0.008, -0.551],
-				[0.0, -0.496],
-				[0.005, -0.453],
-			],
+			perfect: [[-0.017, -0.604]],
 			good: [
-				[-0.16, -0.737],
-				[-0.122, -0.766],
-				[-0.117, -0.646],
-				[-0.095, -0.62],
-				[-0.095, -0.339],
-				[-0.06, -0.467],
-				[-0.06, -0.42],
-				[-0.055, -0.571],
-				[-0.055, -0.522],
-				[0.007, -0.381],
-				[0.042, -0.619],
-				[0.045, -0.569],
-				[0.052, -0.524],
-				[0.065, -0.766],
-				[0.065, -0.467],
-				[0.073, -0.422],
-				[0.078, -0.646],
-				[0.09, -0.334],
-				[0.13, -0.737],
+				[-0.117, -0.671],
+				[-0.117, -0.536],
+				[0.107, -0.673],
+				[0.12, -0.535],
 			],
 			ok: [
-				[-0.253, -0.816],
-				[-0.253, -0.734],
-				[-0.23, -0.392],
-				[-0.185, -0.544],
-				[-0.17, -0.42],
-				[-0.162, -0.589],
-				[-0.062, -0.839],
-				[-0.013, -0.224],
-				[-0.013, -0.19],
-				[0.03, -0.843],
-				[0.21, -0.62],
-				[0.225, -0.726],
-				[0.243, -0.42],
-				[0.267, -0.31],
-				[0.3, -0.454],
+				[-0.253, -0.798],
+				[-0.247, -0.405],
+				[-0.197, -0.527],
+				[-0.153, -0.34],
+				[0.15, -0.462],
+				[0.153, -0.353],
+				[0.163, -0.547],
+				[0.227, -0.791],
 			],
 			bad: [
-				[-0.33, -0.644],
-				[-0.328, -0.274],
-				[-0.325, -0.726],
-				[-0.323, -0.449],
-				[-0.29, -0.177],
-				[-0.227, -0.916],
-				[-0.05, -0.131],
-				[-0.028, -0.869],
-				[0.025, -0.131],
-				[0.103, -0.938],
-				[0.2, -0.861],
-				[0.223, -0.17],
-				[0.24, -0.765],
-				[0.28, -0.657],
-				[0.323, -0.568],
-				[0.333, -0.325],
-				[0.415, -0.4],
+				[-0.4, -0.309],
+				[-0.39, -0.449],
+				[-0.39, -0.227],
+				[-0.373, -0.722],
+				[-0.373, -0.524],
+				[-0.34, -0.604],
+				[0.297, -0.475],
+				[0.35, -0.629],
+				[0.357, -0.538],
+				[0.37, -0.249],
+				[0.377, -0.724],
+				[0.38, -0.416],
+				[0.407, -0.318],
 			],
 		};
 
-		if (!points[rating]) {
-			return null;
-		}
+		let yLimit = -0.2 - this.hideFac;
+		let recommendedPoints = points[rating].filter(
+			(point) => !this.hitList.includes(point.toString()) && point[1] < yLimit
+		);
+		let point = Phaser.Math.RND.pick(recommendedPoints);
+		if (!point) point = Phaser.Math.RND.pick(points[rating]);
 
-		let point = null;
-		for (var i = 0; i < 10; i++) {
-			point = points[rating][Phaser.Math.Between(0, points[rating].length - 1)];
-			if (!this.hit_list.includes(point.toString())) {
-				break;
-			}
-		}
-
-		if (point) {
-			this.hit_list.push(point.toString());
-		}
+		this.hitList.push(point.toString());
 		return point;
 	}
 
@@ -222,21 +182,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 	hit(rating: "perfect" | "good" | "ok" | "bad") {
 		let point = this.getHitPoint(rating);
-
-		if (!point) {
-			console.warn(rating);
-			return;
-		}
-
-		let w = this.sprite.width;
-		let h = this.sprite.height;
-		let x = point[0] * w;
-		let y = point[1] * h;
-		let frame = Phaser.Math.Between(0, 2);
-		let hole = this.scene.add.image(x, y, "bullet_hole", frame);
-		hole.setRotation(Phaser.Math.Between(0, 2 * Math.PI));
-		this.add(hole);
-		this.bullet_holes.push(hole);
+		this.addBulletHole(point[0], point[1]);
 
 		this.isHit = true;
 		this.score = rating;
@@ -252,10 +198,29 @@ export default class Enemy extends Phaser.GameObjects.Container {
 				break;
 
 			case "ok":
+				this.applyMediumSpin();
+				break;
+
 			case "bad":
 				this.applyLargeSpin();
 				break;
 		}
+	}
+
+	addBulletHole(x: number, y: number) {
+		x *= this.sprite.width;
+		y *= this.sprite.height;
+		const frame = Phaser.Math.Between(0, 2);
+
+		const hole = this.scene.add.image(x, y, "bullet_hole", frame);
+		hole.setAngle(360 * Math.random());
+		this.add(hole);
+		this.bulletHoles.push(hole);
+
+		// Broadcast bullet hole position
+		let coord = { x: 0, y: 0 };
+		hole.getCenter(coord, true);
+		this.emit("bulletHole", coord.x, coord.y);
 	}
 
 	isThreat() {
@@ -286,12 +251,22 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		});
 	}
 
+	applyMediumSpin() {
+		this.spinFacTween.stop();
+		this.spinFacTween = this.scene.tweens.add({
+			targets: this,
+			spinFac: { from: 2, to: 0 },
+			duration: 800,
+			ease: "Back.Out",
+		});
+	}
+
 	applyLargeSpin() {
 		this.spinFacTween.stop();
 		this.spinFacTween = this.scene.tweens.add({
 			targets: this,
 			spinFac: { from: 2, to: 0 },
-			duration: 1000,
+			duration: 1200,
 			ease: "Back.Out",
 		});
 	}

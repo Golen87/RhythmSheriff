@@ -32,7 +32,6 @@ export default class EnemyCat extends Enemy {
 			this.turnFac = 0;
 		}
 
-		let hideValue = this.hideFac;
 		let turnValue = this.turnFac - this.spinFac;
 
 		let t = 1 - this.getInterval(myTime, 0.0, 2.0);
@@ -40,7 +39,7 @@ export default class EnemyCat extends Enemy {
 		this.x =
 			this.startX +
 			e * (this.invert ? 1 : -1) * 30 * Math.cos(0.5 * myTime * (2 * Math.PI));
-		this.y = this.startY + this.hideDist * hideValue;
+		this.y = this.startY + this.hideDist * this.hideFac;
 
 		this.scaleX = this.size * Math.cos(turnValue * Math.PI);
 		this.scaleY += (this.size - this.scaleY) * 0.1;
