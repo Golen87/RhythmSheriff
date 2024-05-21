@@ -105,8 +105,8 @@ const audios: Audio[] = [
 	sound("Mato/Woodblock2.wav", "Woodblock2"),
 	sound("Mato/Woodblock.wav", "Woodblock"),
 
-	sound("Jwatch/catcue2.wav", "cat_cue"),
-	sound("Jwatch/ratcue2.wav", "rat_cue"),
+	sound("Jwatch/catcue.wav", "cat_cue"),
+	sound("Jwatch/ratcue.wav", "rat_cue"),
 
 	sound("girl_one.wav", "girl_one"),
 	sound("girl_two.wav", "girl_two"),
