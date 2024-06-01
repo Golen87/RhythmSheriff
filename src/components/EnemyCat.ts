@@ -38,6 +38,7 @@ export default class EnemyCat extends Enemy {
 		let e = Phaser.Math.Easing.Cubic.Out(t);
 		this.x =
 			this.startX +
+			this.offsetX +
 			e * (this.invert ? 1 : -1) * 30 * Math.cos(0.5 * myTime * (2 * Math.PI));
 		this.y = this.startY + this.hideDist * this.hideFac;
 
@@ -49,7 +50,8 @@ export default class EnemyCat extends Enemy {
 		);
 	}
 
-	appear(time: number, invert: boolean, maxBar: number) {
+	appear(time: number, invert: boolean, maxBar: number, offsetX: number) {
+		this.offsetX = offsetX;
 		this.hidingTime = (time + 3) % maxBar;
 		this.turningTime = (time + 1) % maxBar;
 

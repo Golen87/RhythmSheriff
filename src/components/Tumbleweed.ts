@@ -112,7 +112,7 @@ export default class Tumbleweed extends Phaser.GameObjects.Container {
 		const note = (60 / this.musicBpm) * 1000;
 		this.scene.tweens.add({
 			targets: this,
-			bounceHeight: { from: this.bounceHeight, to: 0, duration: 4 * note },
+			bounceHeight: { from: this.bounceHeight, to: 0, duration: 6 * note },
 			musicBpm: { from: this.musicBpm, to: 0, duration: 8 * note },
 			ease: "Cubic.easeIn",
 		});

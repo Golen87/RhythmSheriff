@@ -6,6 +6,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 	public startX: number;
 	public startY: number;
+	public offsetX: number;
 
 	public isHit: boolean;
 	protected isDestroyed: boolean;
@@ -30,6 +31,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 	protected size: number;
 
+	protected stick: Phaser.GameObjects.Image;
 	protected sprite: Phaser.GameObjects.Sprite;
 
 	protected target_destroyed_1: Sound;
@@ -43,6 +45,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 
 		this.startX = x;
 		this.startY = y;
+		this.offsetX = 0;
 
 		this.isHit = false;
 		this.isDestroyed = false;
@@ -65,6 +68,10 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.invert = false;
 
 		this.size = 0.45;
+
+		this.stick = scene.add.image(0, 0, "stick", 0);
+		this.stick.setOrigin(0.5, 0.9);
+		this.add(this.stick);
 
 		this.sprite = scene.add.sprite(0, 0, "cat", 0);
 		this.sprite.setOrigin(0.5, 1.0);
@@ -122,7 +129,7 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		}
 	}
 
-	appear(time: number, invert: boolean, maxBar: number) {}
+	appear(time: number, invert: boolean, maxBar: number, offsetX: number) {}
 
 	hide() {
 		this.hidingTime = -1;

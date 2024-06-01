@@ -14,6 +14,7 @@ const images: Image[] = [
 	image("wood/wood_front.png", "wood_front"),
 	image("wood/wood_back.png", "wood_back"),
 	image("wood/wood_block.png", "wood_block"),
+	image("cat/stick.png", "stick"),
 
 	image("rh/ratings/spiral.png", "try_again_spiral"),
 	image("rh/ratings/ok.png", "ok"),

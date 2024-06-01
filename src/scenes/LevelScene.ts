@@ -116,7 +116,7 @@ export default class LevelScene extends BaseScene {
 		this.fitToScreen(this.background);
 
 		this.woodBack = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_back");
-		this.woodBack.setScale(0.25);
+		this.woodBack.setScale(0.27, 0.25);
 		this.woodBack.setTint(0x936b48);
 		this.woodBack.setDepth(40);
 
@@ -149,12 +149,12 @@ export default class LevelScene extends BaseScene {
 
 		this.woodBlock = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_block");
 		this.woodBlock.setOrigin(0.53, 0.02);
-		this.woodBlock.setScale(0.25);
+		this.woodBlock.setScale(0.27, 0.25);
 		this.woodBlock.setTint(0xaf825b);
 		this.woodBlock.setDepth(100);
 
 		this.woodFront = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_front");
-		this.woodFront.setScale(0.25);
+		this.woodFront.setScale(0.27, 0.25);
 		this.woodFront.setTint(0x936b48);
 		this.woodFront.setDepth(110);
 
@@ -225,7 +225,7 @@ export default class LevelScene extends BaseScene {
 
 			this.tumbleweeds.forEach((tumbleweed) => tumbleweed.setBarTime(barTime));
 
-			this.sandstormGraphics.setAlpha(this.getSandstormEffect(barTime));
+			this.sandstormGraphics.setAlpha(0.8 * this.getSandstormEffect(barTime));
 		} else {
 			this.player.update(0, 0);
 
@@ -305,7 +305,8 @@ export default class LevelScene extends BaseScene {
 			let enemy = this.findAvailableEnemy("cat");
 			if (enemy) {
 				this.invert = !this.invert; // Temporary
-				enemy.appear(time, this.invert, this.currentMusic.maxBar);
+				let offsetX = this.invert ? -25 : 25;
+				enemy.appear(time, this.invert, this.currentMusic.maxBar, offsetX);
 				enemy.setDepth(50 + time / 1000);
 			}
 		}
@@ -313,7 +314,8 @@ export default class LevelScene extends BaseScene {
 			let enemy = this.findAvailableEnemy("rat");
 			if (enemy) {
 				this.invert = !this.invert; // Temporary
-				enemy.appear(time, this.invert, this.currentMusic.maxBar);
+				let offsetX = this.invert ? -25 : 25;
+				enemy.appear(time, this.invert, this.currentMusic.maxBar, offsetX);
 				enemy.setDepth(50 + time / 1000);
 			}
 		}
