@@ -3,10 +3,15 @@ import Player from "@/components/Player";
 import Enemy from "@/components/Enemy";
 import EnemyCat from "@/components/EnemyCat";
 import EnemyRat from "@/components/EnemyRat";
+import Tumbleweed from "@/components/Tumbleweed";
+import DialogueBox from "@/components/DialogueBox";
 import Music from "@/components/Music";
 import Sound from "@/components/Sound";
-import DialogueBox from "@/components/DialogueBox";
 import songMaps from "@/music/songMaps";
+import tumbleweedMaps, { TumbleweedData } from "@/music/tumbleweedMaps";
+
+const ENEMY_X = 650;
+const ENEMY_Y = 470;
 
 export default class LevelScene extends BaseScene {
 	private cues: { [key: number]: string };
@@ -27,16 +32,15 @@ export default class LevelScene extends BaseScene {
 	private dialogueBox: DialogueBox;
 	private dialogueList: string[];
 	private skipText: Phaser.GameObjects.Text;
+	private progressEvent: Phaser.Time.TimerEvent;
 
 	private woodBack: Phaser.GameObjects.Sprite;
 	private woodBlock: Phaser.GameObjects.Image;
 	private woodFront: Phaser.GameObjects.Image;
 
 	private sandstormGraphics: Phaser.GameObjects.Graphics;
-	private tumbleBg: Phaser.GameObjects.Sprite;
-	private tumbleBgStartY: number;
-	private tumbleFg: Phaser.GameObjects.Sprite;
-	private tumbleFgStartY: number;
+	private tumbleweeds: Tumbleweed[];
+	private tumbleweedCues: TumbleweedData[];
 
 	private practiceMusic: Music;
 	private levelMusic: Music;
@@ -62,7 +66,6 @@ export default class LevelScene extends BaseScene {
 
 		if (!this.practiceMusic) {
 			this.practiceMusic = new Music(this, "bgm_practice", { volume: 0.5 });
-			// this.practiceMusic.rate = 105/125;
 			this.practiceMusic.rate = 115 / 125;
 
 			this.practiceMusic.on("complete", this.onLevelComplete, this);
@@ -93,7 +96,7 @@ export default class LevelScene extends BaseScene {
 			volume: 0.35,
 		});
 		this.shoot_3 = new Sound(this, "shoot_3", {
-			volume: 0.3,
+			volume: 0.35,
 		});
 		this.miss = new Sound(this, "miss", {
 			volume: 0.4,
@@ -101,11 +104,9 @@ export default class LevelScene extends BaseScene {
 		this.audienceClap = new Sound(this, "audience_clap", {
 			volume: 0.5,
 		});
-		//this.robot_eject.setVolume(0.5);
-		//this.robot_withdraw.setVolume(0.3);
 
-		this.robotEject = new Sound(this, "robot_eject", { volume: 0.4 });
-		this.catCue = new Sound(this, "cat_cue", { volume: 1.2 });
+		this.robotEject = new Sound(this, "robot_eject", { volume: 0.3 });
+		this.catCue = new Sound(this, "cat_cue", { volume: 1.3 });
 		this.ratCue = new Sound(this, "rat_cue", { volume: 1.2 });
 
 		/* Graphics */
@@ -114,27 +115,22 @@ export default class LevelScene extends BaseScene {
 		this.background = this.add.image(this.CX, this.CY, "background");
 		this.fitToScreen(this.background);
 
-		// Tumble background
-		this.tumbleBg = this.add.sprite(1500, 440, "tumble");
-		this.tumbleBgStartY = this.tumbleBg.y;
-		this.tumbleBg.setScale(0.55);
-		this.tumbleBg.setDepth(30);
-
-		this.woodBack = this.add.sprite(650, 490, "wood_back");
+		this.woodBack = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_back");
 		this.woodBack.setScale(0.25);
 		this.woodBack.setTint(0x936b48);
 		this.woodBack.setDepth(40);
 
-		this.dummy = new EnemyCat(this, 680, 490);
+		this.dummy = new EnemyCat(this, ENEMY_X + 30, ENEMY_Y);
+		this.dummy.setDepth(50);
 		this.enemies = [
-			new EnemyCat(this, 650, 490),
-			new EnemyCat(this, 650, 490),
-			new EnemyCat(this, 650, 490),
-			new EnemyCat(this, 650, 490),
-			new EnemyRat(this, 650, 490),
-			new EnemyRat(this, 650, 490),
-			new EnemyRat(this, 650, 490),
-			new EnemyRat(this, 650, 490),
+			new EnemyCat(this, ENEMY_X, ENEMY_Y),
+			new EnemyCat(this, ENEMY_X, ENEMY_Y),
+			new EnemyCat(this, ENEMY_X, ENEMY_Y),
+			new EnemyCat(this, ENEMY_X, ENEMY_Y),
+			new EnemyRat(this, ENEMY_X, ENEMY_Y),
+			new EnemyRat(this, ENEMY_X, ENEMY_Y),
+			new EnemyRat(this, ENEMY_X, ENEMY_Y),
+			new EnemyRat(this, ENEMY_X, ENEMY_Y),
 		];
 		this.enemies.forEach((enemy) => {
 			enemy.on("score", this.onScore, this);
@@ -151,22 +147,16 @@ export default class LevelScene extends BaseScene {
 			});
 		});
 
-		this.woodBlock = this.add.sprite(650, 490, "wood_block");
+		this.woodBlock = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_block");
 		this.woodBlock.setOrigin(0.53, 0.02);
 		this.woodBlock.setScale(0.25);
 		this.woodBlock.setTint(0xaf825b);
 		this.woodBlock.setDepth(100);
 
-		this.woodFront = this.add.sprite(650, 490, "wood_front");
+		this.woodFront = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_front");
 		this.woodFront.setScale(0.25);
 		this.woodFront.setTint(0x936b48);
 		this.woodFront.setDepth(110);
-
-		// Tumble foreground
-		this.tumbleFg = this.add.sprite(1500, 470, "tumble");
-		this.tumbleFgStartY = this.tumbleFg.y;
-		this.tumbleFg.setScale(0.8);
-		this.tumbleFg.setDepth(120);
 
 		// Foreground
 		let fg = this.add.image(this.CX, this.CY, "foreground");
@@ -174,7 +164,7 @@ export default class LevelScene extends BaseScene {
 		this.fitToScreen(fg);
 
 		// Player
-		this.player = new Player(this, 260, 570);
+		this.player = new Player(this, 260, 560);
 		this.player.setDepth(200);
 
 		this.sandstormGraphics = this.add.graphics();
@@ -192,13 +182,16 @@ export default class LevelScene extends BaseScene {
 		this.sandstormGraphics.fillRect(0, 0, this.W, this.H);
 		this.sandstormGraphics.setAlpha(0);
 
+		this.tumbleweeds = [];
+		this.tumbleweedCues = [];
+
 		/* Input */
 
 		this.setupInput();
 
 		/* Tutorial */
 
-		this.dialogueBox = new DialogueBox(this, 680, 200, 500, 240);
+		this.dialogueBox = new DialogueBox(this, 680, 180, 500, 240);
 		this.dialogueBox.setAlpha(0);
 		this.dialogueBox.setDepth(1000);
 
@@ -215,13 +208,13 @@ export default class LevelScene extends BaseScene {
 
 		this.addEvent(700, this.showSkip);
 		this.addEvent(1200, this.showDummy);
-		this.addEvent(1200 + 1000, this.onProgress);
+		this.progressEvent = this.addEvent(1200 + 1000, this.onProgress);
 	}
 
 	update(time: number, delta: number) {
 		if (this.currentMusic) {
 			let barTime = this.currentMusic.getBarTime();
-			let deltaBarTime = barTime - this.lastBarTime;
+			let deltaBarTime = Math.max(barTime - this.lastBarTime, 0);
 			this.lastBarTime = barTime;
 
 			this.player.update(barTime, deltaBarTime);
@@ -229,6 +222,10 @@ export default class LevelScene extends BaseScene {
 			this.enemies.forEach((enemy) => {
 				enemy.update(barTime, deltaBarTime);
 			});
+
+			this.tumbleweeds.forEach((tumbleweed) => tumbleweed.setBarTime(barTime));
+
+			this.sandstormGraphics.setAlpha(this.getSandstormEffect(barTime));
 		} else {
 			this.player.update(0, 0);
 
@@ -237,42 +234,18 @@ export default class LevelScene extends BaseScene {
 			});
 		}
 
-		this.tumbleBg.angle += ((4 * delta) / 1000) * 60;
-		this.tumbleBg.x += ((5 * delta) / 1000) * 60;
-		if (this.currentMusic) {
-			this.tumbleBg.y =
-				this.tumbleBgStartY -
-				40 * Math.abs(Math.cos((this.currentMusic.getBarTime() * Math.PI) / 2));
-			if (this.tumbleBg.x > this.W + 500) {
-				this.tumbleBg.x = -500;
-			}
-		}
-
-		this.tumbleFg.angle += ((6 * delta) / 1000) * 60;
-		this.tumbleFg.x += ((7 * delta) / 1000) * 60;
-		if (this.currentMusic) {
-			this.tumbleFg.y =
-				this.tumbleFgStartY -
-				50 * Math.abs(Math.sin((this.currentMusic.getBarTime() * Math.PI) / 2));
-			if (this.tumbleFg.x > this.W + 1500) {
-				this.tumbleFg.x = -1500;
-			}
-		}
+		this.tumbleweeds.forEach((tumbleweed) => tumbleweed.update(time, delta));
 
 		this.blockTap = false;
 	}
 
 	setupInput() {
 		if (this.input.keyboard) {
-			let keySpace = this.input.keyboard.addKey(
-				Phaser.Input.Keyboard.KeyCodes.SPACE
-			);
+			let keySpace = this.input.keyboard.addKey("SPACE");
 			keySpace.on("down", this.onTapDown, this);
 			keySpace.on("up", this.onTapUp, this);
 
-			let keySkip = this.input.keyboard.addKey(
-				Phaser.Input.Keyboard.KeyCodes.S
-			);
+			let keySkip = this.input.keyboard.addKey("S");
 			keySkip.on("down", this.onSkipDown, this);
 			keySkip.on("up", this.onSkipUp, this);
 		}
@@ -290,6 +263,12 @@ export default class LevelScene extends BaseScene {
 		// this.robotEject.setRate(rate);
 		this.catCue.setRate(rate);
 		this.ratCue.setRate(rate);
+
+		// Clear onLoop event listener
+		this.currentMusic.removeAllListeners("onLoop");
+		this.currentMusic.on("onLoop", () => {
+			this.loadTumbleweeds(this.tumbleweedCues);
+		});
 	}
 
 	findAvailableEnemy(type: string) {
@@ -318,11 +297,11 @@ export default class LevelScene extends BaseScene {
 	onBeat(time: number) {
 		if (!this.currentMusic) return;
 
-		let catCheckTime = (time + 2) % this.eventMaxRange;
-		let ratCheckTime = (time + 1.5) % this.eventMaxRange;
-		let spinCheckTime = (time + 0) % this.eventMaxRange;
+		let catTime = (time + 2) % this.eventMaxRange;
+		let ratTime = (time + 1.5) % this.eventMaxRange;
+		let currentBar = (time + 0) % this.eventMaxRange;
 
-		if (this.cues[catCheckTime] == "cat") {
+		if (this.cues[catTime] == "cat") {
 			let enemy = this.findAvailableEnemy("cat");
 			if (enemy) {
 				this.invert = !this.invert; // Temporary
@@ -330,7 +309,7 @@ export default class LevelScene extends BaseScene {
 				enemy.setDepth(50 + time / 1000);
 			}
 		}
-		if (this.cues[ratCheckTime] == "rat") {
+		if (this.cues[ratTime] == "rat") {
 			let enemy = this.findAvailableEnemy("rat");
 			if (enemy) {
 				this.invert = !this.invert; // Temporary
@@ -338,31 +317,17 @@ export default class LevelScene extends BaseScene {
 				enemy.setDepth(50 + time / 1000);
 			}
 		}
-		if (this.cues[spinCheckTime] == "spin") {
+		if (this.cues[currentBar] == "spin") {
 			this.player.play("spin");
 			this.player.holsterTime = this.currentMusic.getBar() + 3;
-		} else if (this.cues[spinCheckTime] == "holster") {
+		} else if (this.cues[currentBar] == "holster") {
 			this.player.play("unequip");
-		} else if (this.cues[spinCheckTime] == "stop") {
+		} else if (this.cues[currentBar] == "stop") {
 			this.player.play("unequip", false);
 			this.player.allowBounce = false;
+		} else if (this.cues[currentBar] == "tumblestop") {
+			this.tumbleweeds.forEach((tumbleweed) => tumbleweed.slowDown());
 		}
-
-		// if (this.cues[catCheckTime-0.0] == 'cat')
-		// 	this.girl_three.play();
-		// if (this.cues[catCheckTime-1.0] == 'cat')
-		// 	this.girl_two.play();
-		// if (this.cues[catCheckTime-2.0] == 'cat')
-		// 	this.girl_one.play();
-
-		// if (this.cues[ratCheckTime-0.0] == 'rat')
-		// 	this.girl_four.play();
-		// if (this.cues[ratCheckTime-0.5] == 'rat')
-		// 	this.girl_three.play();
-		// if (this.cues[ratCheckTime-1.0] == 'rat')
-		// 	this.girl_two.play();
-		// if (this.cues[ratCheckTime-1.5] == 'rat')
-		// 	this.girl_one.play();
 
 		this.player.onBeat(time);
 		this.enemies.forEach((enemy) => {
@@ -390,7 +355,7 @@ export default class LevelScene extends BaseScene {
 				if (this.dialogueList.length == 0) {
 					this.addEvent(200, this.hideDummy);
 				}
-				this.addEvent(500, this.onProgress);
+				this.progressEvent = this.addEvent(500, this.onProgress);
 			}
 		}
 	}
@@ -421,9 +386,15 @@ export default class LevelScene extends BaseScene {
 				this.dialogueList = [];
 				this.dialogueBox.hide();
 				this.hideDummy(true);
+				this.resetEnemies();
+				this.player.reset();
+				this.tumbleweeds.forEach((tumbleweed) => tumbleweed.destroy());
+				this.tumbleweeds = [];
+
 				this.fade(false, 100, 0x111111);
 			});
-			this.addEvent(2000, this.onProgress);
+			this.progressEvent.destroy();
+			this.progressEvent = this.addEvent(2000, this.onProgress);
 		}
 	}
 
@@ -494,6 +465,46 @@ export default class LevelScene extends BaseScene {
 		}
 	}
 
+	resetEnemies() {
+		this.enemies.forEach((enemy) => {
+			enemy.hide();
+		});
+	}
+
+	getSandstormEffect(barTime: number) {
+		return Math.max(
+			0,
+			1 - Math.abs(128 - barTime) / 36,
+			0.2 * (1 - Math.abs(86 - barTime) / 30)
+		);
+	}
+
+	loadTumbleweeds(tumbleweeds: TumbleweedData[]) {
+		this.tumbleweeds.forEach((tumbleweed) => tumbleweed.detach());
+		tumbleweeds.forEach((data) => {
+			this.addTumbleweed(data.time, data.layer, data.random || false);
+		});
+	}
+
+	addTumbleweed(barTime: number, layer: number, random = false) {
+		let tumbleweed = new Tumbleweed(
+			this,
+			ENEMY_X,
+			ENEMY_Y,
+			barTime,
+			layer,
+			random,
+			this.getSandstormEffect(barTime),
+			this.currentMusic!.bpm
+		);
+		this.tumbleweeds.push(tumbleweed);
+
+		tumbleweed.on("offscreen", () => {
+			this.tumbleweeds.splice(this.tumbleweeds.indexOf(tumbleweed), 1);
+			tumbleweed.destroy();
+		});
+	}
+
 	addBulletLine(gun: Phaser.Math.Vector2, hole: Phaser.Math.Vector2) {
 		const end = new Phaser.Math.Vector2(
 			hole.x + 0.5 * (hole.x - gun.x),
@@ -511,15 +522,19 @@ export default class LevelScene extends BaseScene {
 		lineBg.setOrigin(0);
 		lineBg.setBlendMode(Phaser.BlendModes.ADD);
 
+		const setWidth = (t: number) => {
+			lineFg.setLineWidth(0 * t, 4 * t);
+			lineBg.setLineWidth(2 * t, 0 * t);
+			lineFg.setAlpha(0.5);
+			lineBg.setAlpha(0.5);
+		};
+		setWidth(1);
+
 		this.tweens.addCounter({
-			ease: "Cubic.Out",
-			duration: 250,
+			ease: "Sine.Out",
+			duration: 200,
 			onUpdate: (tween) => {
-				let t = 1 - tween.getValue();
-				lineFg.setLineWidth(0 * t, 6 * t);
-				lineBg.setLineWidth(4 * t, 0 * t);
-				lineFg.setAlpha(0.5 * t);
-				lineBg.setAlpha(0.5 * t);
+				setWidth(1 - tween.getValue());
 			},
 			onComplete: () => {
 				lineFg.destroy();
@@ -607,9 +622,11 @@ export default class LevelScene extends BaseScene {
 				this.currentMusic.stop();
 				this.currentMusic = null;
 
+				this.tumbleweeds.forEach((tumbleweed) => tumbleweed.detach());
+
 				this.audienceClap.play();
 				this.addEvent(1000, this.showDummy);
-				this.addEvent(1000 + 1000, this.onProgress);
+				this.progressEvent = this.addEvent(1000 + 1000, this.onProgress);
 				this.player.play("unequip");
 			} else {
 				console.warn("Failed onProgress");
@@ -634,14 +651,13 @@ export default class LevelScene extends BaseScene {
 			else if (this.progress == "cat_text") {
 				this.progress = "practice_cat";
 
-				this.cues = {
-					6: "cat",
-					14: "cat",
-				};
+				this.cues = songMaps.practice1;
 				this.eventMaxRange = 16;
 				this.practiceCount = 3;
 
 				this.playMusic(this.practiceMusic);
+				this.tumbleweedCues = tumbleweedMaps.practice1;
+				this.loadTumbleweeds(this.tumbleweedCues);
 			}
 			// Rat target introduction
 			else if (this.progress == "practice_cat") {
@@ -656,14 +672,13 @@ export default class LevelScene extends BaseScene {
 			else if (this.progress == "rat_text") {
 				this.progress = "practice_rat";
 
-				this.cues = {
-					6: "rat",
-					14: "rat",
-				};
+				this.cues = songMaps.practice2;
 				this.eventMaxRange = 16;
 				this.practiceCount = 3;
 
 				this.playMusic(this.practiceMusic);
+				this.tumbleweedCues = tumbleweedMaps.practice2;
+				this.loadTumbleweeds(this.tumbleweedCues);
 			}
 			// Combined target introduction
 			else if (this.progress == "practice_rat") {
@@ -678,16 +693,13 @@ export default class LevelScene extends BaseScene {
 			else if (this.progress == "cat_and_rat_text") {
 				this.progress = "practice_cat_and_rat";
 
-				this.cues = {
-					[4.0]: "cat",
-					[6.5]: "rat",
-					[11.0]: "cat",
-					[14.5]: "rat",
-				};
+				this.cues = songMaps.practice3;
 				this.eventMaxRange = 16;
 				this.practiceCount = 3;
 
 				this.playMusic(this.practiceMusic);
+				this.tumbleweedCues = tumbleweedMaps.practice3;
+				this.loadTumbleweeds(this.tumbleweedCues);
 			}
 			// End of practice
 			else if (this.progress == "practice_cat_and_rat") {
@@ -709,6 +721,8 @@ export default class LevelScene extends BaseScene {
 				this.hideSkip();
 
 				this.playMusic(this.levelMusic);
+				this.tumbleweedCues = tumbleweedMaps.tapatio;
+				this.loadTumbleweeds(this.tumbleweedCues);
 			}
 		}
 	}
@@ -745,6 +759,8 @@ export default class LevelScene extends BaseScene {
 		} else if (count["bad"] < 6 && count["miss"] < 3) {
 			rating = "good";
 		}
+
+		this.tumbleweeds.forEach((tumbleweed) => tumbleweed.detach());
 
 		this.fade(true, 500, 0x111111);
 		this.addEvent(500, () => {

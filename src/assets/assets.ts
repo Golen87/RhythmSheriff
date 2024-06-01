@@ -7,9 +7,10 @@ const images: Image[] = [
 	image("foreground.png", "foreground"),
 	image("title.png", "title"),
 	image("bullet_line.png", "bullet_line"),
-
-	image("tumble.png", "tumble"),
+	
+	image("dog/dog_shadow.png", "dog_shadow"),
 	image("shadow.png", "shadow"),
+	image("tumble.png", "tumble"),
 	image("wood/wood_front.png", "wood_front"),
 	image("wood/wood_back.png", "wood_back"),
 	image("wood/wood_block.png", "wood_block"),

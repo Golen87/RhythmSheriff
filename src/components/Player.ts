@@ -18,7 +18,7 @@ export default class Player extends Phaser.GameObjects.Container {
 		this.size = 0.57;
 		this.holsterTime = -1;
 
-		this.shadow = scene.add.image(x - 10, y - 20, "shadow");
+		this.shadow = scene.add.image(x - 10, y - 20, "dog_shadow");
 		this.shadow.setAlpha(0.4);
 		this.add(this.shadow);
 
@@ -52,6 +52,11 @@ export default class Player extends Phaser.GameObjects.Container {
 			this.holsterTime = -1;
 			this.play("unequip");
 		}
+	}
+
+	reset() {
+		this.sprite.play("unequip");
+		this.sprite.setFrame(0);
 	}
 
 	play(key: string, playSound = true) {

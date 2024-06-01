@@ -49,7 +49,7 @@ export default class Music extends Phaser.Sound.WebAudioSound {
 				if (this.currentTime > this.end) {
 					this.setSeek(this.currentTime - (this.end - this.start));
 					this.loopSum += this.end - this.start;
-					this.emit("loop");
+					this.emit("onLoop");
 				}
 			}
 

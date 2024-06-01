@@ -71,10 +71,10 @@ export default class Enemy extends Phaser.GameObjects.Container {
 		this.add(this.sprite);
 
 		this.target_destroyed_1 = new Sound(scene, "target_destroyed_1", {
-			volume: 0.5,
+			volume: 0.3,
 		});
 		this.destroy_pieces = new Sound(scene, "destroy_pieces", {
-			volume: 0.5,
+			volume: 0.3,
 		});
 	}
 

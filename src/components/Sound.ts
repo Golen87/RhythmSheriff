@@ -29,6 +29,10 @@ export default class Sound {
 		this.sounds[index].play();
 	}
 
+	stop() {
+		this.sounds.forEach((sound) => sound.stop());
+	}
+
 	setRate(rate: number) {
 		this.sounds.forEach((sound) => (sound.rate = rate));
 	}

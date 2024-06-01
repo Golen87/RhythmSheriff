@@ -1,3 +1,23 @@
+const practice1 = {
+	1: "tumbleweed",
+	6: "cat",
+	14: "cat",
+};
+
+const practice2 = {
+	1: "tumbleweed",
+	6: "rat",
+	14: "rat",
+};
+
+const practice3 = {
+	1: "tumbleweed",
+	[4.0]: "cat",
+	[6.5]: "rat",
+	[11.0]: "cat",
+	[14.5]: "rat",
+};
+
 // 2019 cues for JWatch's puppywestern
 const puppywestern = {
 	6: "cat",
@@ -60,6 +80,8 @@ const puppywestern = {
 
 // 2022 cues for Tapatio by Shady Monk
 const tapatio = {
+	1: "tumbleweed",
+
 	// Intro
 	[8 + 2]: "cat",
 	[8 + 6]: "cat",
@@ -156,6 +178,7 @@ const tapatio = {
 	[152 + 27.5]: "rat",
 	[152 + 28.5]: "holster",
 	[152 + 29.0]: "rat",
+	[152 + 30.0]: "tumblestop",
 	[152 + 31.0]: "cat",
 	[152 + 32.0]: "spin",
 	[152 + 35.0]: "stop",
@@ -163,7 +186,20 @@ const tapatio = {
 	// Outro (184)
 };
 
+// 2024 cues for Potara by Shady Monk
+const potara = {
+	// Intro
+	[64 + 3]: "rat",
+	[64 + 7]: "rat",
+	[64 + 11]: "rat",
+	[64 + 14]: "rat",
+};
+
 export default {
+	practice1,
+	practice2,
+	practice3,
 	puppywestern,
 	tapatio,
+	potara,
 };
