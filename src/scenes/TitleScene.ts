@@ -114,27 +114,6 @@ export default class TitleScene extends BaseScene {
 		}
 		this.music.play();
 
-		/* Debugging */
-
-		if (this.input.keyboard) {
-			this.input.keyboard.once("keydown-ONE", () => {
-				this.music.stop();
-				this.scene.start("EvaluationScene", { rating: "bad" });
-			});
-			this.input.keyboard.once("keydown-TWO", () => {
-				this.music.stop();
-				this.scene.start("EvaluationScene", { rating: "good" });
-			});
-			this.input.keyboard.once("keydown-THREE", () => {
-				this.music.stop();
-				this.scene.start("EvaluationScene", { rating: "great" });
-			});
-			this.input.keyboard.once("keydown-FOUR", () => {
-				this.music.stop();
-				this.scene.start("EvaluationScene", { rating: "perfect" });
-			});
-		}
-
 		/* Animations */
 
 		this.titleRhythm.x -= 50;
