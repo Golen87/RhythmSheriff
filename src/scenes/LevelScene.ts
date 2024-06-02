@@ -154,6 +154,7 @@ export default class LevelScene extends BaseScene {
 		this.woodBlock.setDepth(100);
 
 		this.woodFront = this.add.sprite(ENEMY_X, ENEMY_Y, "wood_front");
+		this.woodFront.setOrigin(0.5, 0.25);
 		this.woodFront.setScale(0.27, 0.25);
 		this.woodFront.setTint(0x936b48);
 		this.woodFront.setDepth(110);
@@ -164,7 +165,7 @@ export default class LevelScene extends BaseScene {
 		this.fitToScreen(fg);
 
 		// Player
-		this.player = new Player(this, 260, 560);
+		this.player = new Player(this, 250, 560);
 		this.player.setDepth(200);
 
 		this.sandstormGraphics = this.add.graphics();
@@ -191,7 +192,7 @@ export default class LevelScene extends BaseScene {
 
 		/* Tutorial */
 
-		this.dialogueBox = new DialogueBox(this, 680, 180, 500, 240);
+		this.dialogueBox = new DialogueBox(this, 690, 180, 500, 240);
 		this.dialogueBox.setAlpha(0);
 		this.dialogueBox.setDepth(1000);
 
